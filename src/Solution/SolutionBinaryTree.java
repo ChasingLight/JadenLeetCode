@@ -1,12 +1,9 @@
 package Solution;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 import TreeUtil.TreeNode;
+import TreeUtil.TreeNodeUtil;
 
 public class SolutionBinaryTree {
 	
@@ -88,7 +85,7 @@ public class SolutionBinaryTree {
      * 通过一个升序数组，构建二叉搜索树(Binary Search Tree)
      * 
      * 同时要求是一个平衡二叉搜索树
-     * @param nums
+     * @param num
      * @return
      */
     public static TreeNode sortedArrayToBST(int[] num) {
@@ -332,13 +329,34 @@ public class SolutionBinaryTree {
     			break;
     		}
     	}
-    	
-    	int leftRootIndex = postIndex - (inEnd - (inIndex+1) + 1) - 1; 
+
+    	int leftRootIndex = postIndex - (inEnd - (inIndex+1) + 1) - 1;
+
+		//右子树根节点，在后序数组中的下标 = preIndex-1
     	node.right = helper(postIndex - 1, inIndex+1, inEnd, postorder, inorder);
-    	node.left = helper(leftRootIndex, inStart, inIndex-1, postorder, inorder);
+
+		//左子树根节点，在后序数组中的下标 = preIndex-右子树节点个数-1
+		node.left = helper(leftRootIndex, inStart, inIndex-1, postorder, inorder);
     
     	return node;
     }
+
+
+	/**
+	 * 校验树是否为 二叉搜索树
+	 * @param root
+	 * @return
+	 */
+	public boolean isValidBST(TreeNode root){
+		List<Integer> nums = new ArrayList<>();
+		List<Integer> result = TreeNodeUtil.inTraverse(root, nums);
+
+		//判断生成的list是否是升序的
+		// TODO: 2017/12/4
+
+		return true;
+	}
+
     
   
 }
