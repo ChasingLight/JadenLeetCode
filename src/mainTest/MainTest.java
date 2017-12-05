@@ -47,6 +47,8 @@ public class MainTest {
 		
 		TreeNode root555 = SolutionBinaryTree.buildTreeInPost(inorder, postorder);
 		System.out.println(SolutionBinaryTree.levelOrder(root555));
+		
+		System.out.println(SolutionBinaryTree.isValidBST(root555));
 
 	}
 	

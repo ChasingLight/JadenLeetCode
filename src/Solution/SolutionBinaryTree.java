@@ -1,9 +1,8 @@
 package Solution;
 
-import java.util.*;
-
 import TreeUtil.TreeNode;
-import TreeUtil.TreeNodeUtil;
+
+import java.util.*;
 
 public class SolutionBinaryTree {
 	
@@ -344,19 +343,38 @@ public class SolutionBinaryTree {
 
 	/**
 	 * 校验树是否为 二叉搜索树
+	 *
+	 *
 	 * @param root
 	 * @return
 	 */
-	public boolean isValidBST(TreeNode root){
-		List<Integer> nums = new ArrayList<>();
-		List<Integer> result = TreeNodeUtil.inTraverse(root, nums);
-
-		//判断生成的list是否是升序的
-		// TODO: 2017/12/4
-
+	public static boolean isValidBST(TreeNode root){
+		//特殊情况处理:空树是BST
+		if(root == null) return true;
+		
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		stack.push(root);
+		
+		TreeNode preNode = null;
+		
+		while(!stack.isEmpty()){
+			while(stack.peek() != null) //向左走到尽头
+				stack.push(stack.peek().left);
+			
+			stack.pop();  //空指针出栈
+			
+			if (!stack.isEmpty()) {  //访问节点，向右一步
+				TreeNode node = stack.pop();
+				
+				if(preNode != null && node.val <= preNode.val) return false;   //核心点:遍历第一个节点值，不进行比较
+				preNode = node;
+				
+				stack.push(node.right);
+			}
+		}
+		
 		return true;
 	}
-
     
   
 }
