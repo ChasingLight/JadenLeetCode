@@ -1,11 +1,11 @@
 package mainTest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import Solution.SolutionBinaryTree;
 import TreeUtil.TreeNode;
 import TreeUtil.TreeNodeUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainTest {
 	
