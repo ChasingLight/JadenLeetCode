@@ -375,6 +375,82 @@ public class SolutionBinaryTree {
 		
 		return true;
 	}
+
+	/**
+	 * "Z字型"层次遍历树,递归解法
+	 *
+	 * 说明:代码中level从0开始，故偶数层:从左向右；奇数层:从右至左。
+	 *
+	 * 但是本质上是先序遍历(DFS)，只是取巧使用了list.add(0,element); 这个特点来解决问题。
+	 * @param root
+	 * @return
+	 */
+	public static List<List<Integer>> zigzagLevelOrder(TreeNode root){
+		List<List<Integer>> result = new ArrayList<>();
+		travel(root, result, 0);
+		return result;
+	}
+
+	private static void travel(TreeNode node, List<List<Integer>> result, int level){
+		//递归出口
+		if(node == null) return;
+
+		if (result.size() <= level){
+			List<Integer> newLevel = new ArrayList<>();
+			result.add(newLevel);
+		}
+
+		List<Integer> levelList = result.get(level);
+		if(level % 2 == 0){
+			levelList.add(node.val);
+		}else{
+			levelList.add(0,node.val);
+		}
+
+		travel(node.left, result, level+1);
+		travel(node.right, result, level+1);
+	}
+
+
+	/**
+	 * "Z字型"层次遍历树,使用队列
+	 *
+	 * 但是本质上是简单层次遍历，只是取巧使用了list.add(0,element); 这个特点来解决问题。
+	 * @param root
+	 * @return
+	 */
+	public static List<List<Integer>> zigzagLevelOrder2(TreeNode root) {
+		List<List<Integer>> result = new ArrayList<>();
+
+		if (root == null)  return result;  //空树
+
+
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		int level = 1;   //层数
+		int levelSize = 0;   //层次所有节点数
+		while(!queue.isEmpty()){
+			levelSize = queue.size();
+			List<Integer> levelValue = new ArrayList<>();
+			while(levelSize-- > 0){  //一层遍历完毕
+				TreeNode node = queue.poll();
+
+				if (level % 2 == 0)
+					levelValue.add(0,node.val);
+				else
+					levelValue.add(node.val);
+
+				if(node.left != null) queue.offer(node.left);
+				if(node.right != null) queue.offer(node.right);
+			}
+
+			result.add(levelValue);
+			level++;
+		}
+		return result;
+	}
+
+
     
   
 }

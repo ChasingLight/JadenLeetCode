@@ -39,9 +39,9 @@ public class MainTest {
 		root1 = null;
 		System.out.println(SolutionBinaryTree.levelOrder(root1));
 		
-		int[] preorder = {1,2,4,5,3,6,7};
-		int[] inorder = {4,2,5,1,6,3,7};
-		int[] postorder = {4,5,2,6,7,3,1};
+		int[] preorder = {1,2,4,3,5};
+		int[] inorder = {2,4,1,5,3};
+		int[] postorder = {4,2,5,3,1};
 		TreeNode root444 = TreeNodeUtil.buildTreePreIn2(preorder, inorder);
 		System.out.println(SolutionBinaryTree.levelOrder(root444));
 		
@@ -49,6 +49,8 @@ public class MainTest {
 		System.out.println(SolutionBinaryTree.levelOrder(root555));
 		
 		System.out.println(SolutionBinaryTree.isValidBST(root555));
+
+		System.out.println(SolutionBinaryTree.zigzagLevelOrder2(root555));
 
 	}
 	
