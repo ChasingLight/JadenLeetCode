@@ -1,6 +1,7 @@
 package mainTest;
 
 import Solution.SolutionBinaryTree;
+import Solution.SolutionString;
 import TreeUtil.TreeNode;
 import TreeUtil.TreeNodeUtil;
 
@@ -51,6 +52,11 @@ public class MainTest {
 		System.out.println(SolutionBinaryTree.isValidBST(root555));
 
 		System.out.println(SolutionBinaryTree.zigzagLevelOrder2(root555));
+
+		String str = "abcdefg";
+		System.out.println(SolutionString.reverseStrII(str,2));
+
+		System.out.println(SolutionString.tree2str2(root444));
 
 	}
 	

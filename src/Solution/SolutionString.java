@@ -1,5 +1,7 @@
 package Solution;
 
+import TreeUtil.TreeNode;
+
 import java.util.Stack;
 
 //关于String相关的算法解决
@@ -12,7 +14,8 @@ public class SolutionString {
 	 * @return
 	 */
 	public static int romanToInt(String s){
-		char[] word = s.toCharArray();  //eg:MCMXXC=1000 + 100 + (1000 - 2*100) + 10 + 10 + (100 - 2*10) = 1000 + 900 + 10 + 90 = 2000
+		char[] word = s.toCharArray();
+		//eg:MCMXXC=1000 + 100 + (1000 - 2*100) + 10 + 10 + (100 - 2*10) = 1000 + 900 + 10 + 90 = 2000
 		int ret = toNumber(word[0]);  
         for (int i = 1; i < word.length; i++) {  
             if (toNumber(word[i-1]) < toNumber(word[i])) {  
@@ -50,8 +53,117 @@ public class SolutionString {
             case 'M': return 1000;  
         }  
         return 0;  
-    }  
-	
+    }
+
+	/**
+	 * 翻转字符串II: 对于每个2k长度字符串，只翻转前k个字符串即可。
+	 *
+	 * 额外说明：字符串s和k，范围是[1,10000].
+	 * @param s
+	 * @param k
+	 * @return
+	 */
+	public static String reverseStrII(String s, int k) {
+		char[] word = s.toCharArray();
+
+		for(int i = 0; i < word.length; i+=2*k){
+			int a = i;
+			int b = (a+k-1) > (word.length-1) ? (word.length-1) : (a+k-1);
+			while(a < b){  //翻转字符串
+				char temp = word[a];
+				word[a] = word[b];
+				word[b] = temp;
+
+				a++;
+				b--;
+			}
+		}
+		return new String(word);
+	}
+
+	/**
+	 * 判断机器人是否行驶轨迹是个环，即最终位置和初始位置是同一位置。
+	 *
+	 * 有效指令：R (Right), L (Left), U (Up), D (down)
+	 * @param moves
+	 * @return
+	 */
+	public static boolean judgeCircle(String moves) {
+		//特殊情况处理
+		if(moves == null || moves.length() == 0)  return true;
+
+		//初始位置坐标(0,0)
+		int x = 0;
+		int y = 0;
+		char[] steps = moves.toCharArray();
+		for (int i = 0; i < steps.length; i++) {
+			switch (steps[i]){
+				case 'U': y++; break;
+				case 'D': y--; break;
+				case 'L': x--; break;
+				case 'R': x++; break;
+			}
+		}
+
+		return (x==0 && y==0);
+	}
+
+	/**
+	 * 将二叉树用字符串予以表示
+	 *
+	 * 缺点：直接使用String，然后使用加号“+”，进行拼接,效率不高。
+	 * @param t
+	 * @return
+	 */
+	public static String tree2str(TreeNode t) {
+		//递归出口
+		if (t == null)
+			return "";
+
+		//左右子树，4种情况分别处理
+		if (t.left == null && t.right == null)
+			return t.val + "";
+		if (t.left == null)
+			return t.val + "()" + "(" + tree2str(t.right) + ")";
+		if (t.right == null)
+			return t.val + "(" + tree2str(t.left) + ")";
+		return t.val + "(" + tree2str(t.left) + ")(" + tree2str(t.right) + ")";
+	}
+
+	/**
+	 * 将二叉树用字符串予以表示  解法2
+	 *
+	 * 优化使用StringBuffer进行拼接结果。
+	 * @param t
+	 * @return
+	 */
+	public static String tree2str2(TreeNode t) {
+		StringBuilder sb = new StringBuilder();
+		helper(t, sb);
+		return sb.toString();
+	}
+
+	private static void helper(TreeNode root, StringBuilder sb) {
+		//递归出口
+		if (root == null)  return;
+
+		//左右子树,分别情况处理
+		sb.append(root.val);
+		if (root.left != null || root.right != null) {
+			sb.append("(");
+			helper(root.left, sb);
+			sb.append(")");
+			if (root.right != null) {
+				sb.append("(");
+				helper(root.right, sb);
+				sb.append(")");
+			}
+		}
+
+	}
+
+
+
 	/**
 	 * 学生签到记录 : 如果超过一次A，或者超过连续两次L，将会失去奖学金的资格评比。
 	 * 'A' : Absent.
@@ -61,6 +173,7 @@ public class SolutionString {
 	 * @return
 	 */
 	public static boolean checkRecord(String s) {
+
 		return !((s.indexOf('A') != s.lastIndexOf('A')) || (s.indexOf("LLL") != -1));
         
     }
