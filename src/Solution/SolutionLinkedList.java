@@ -3,9 +3,21 @@ package Solution;
 
 import LinkedListUtil.ListNode;
 
+import java.util.List;
+
 public class SolutionLinkedList {
-	
-	
+
+	/**
+	 * 删除链表中的一个节点(除了尾节点)
+	 *
+	 * 特殊点：give only access to that node.
+	 * @param node
+	 */
+	public void deleteNode(ListNode node){
+		node.val = node.next.val;
+		node.next = node.next.next;
+	}
+
 	/**
 	 * 倒转链表(最简约的方式) 涵盖了空链表和一个节点的情况
 	 * @param head
@@ -21,6 +33,11 @@ public class SolutionLinkedList {
 			head = nxt;
 		}
 		return pre;
+	}
+
+	public static ListNode reverseList2(ListNode head) {
+		// TODO: 2017/12/18 倒转链表递归实现
+		return null;
 	}
 	
 	/**
