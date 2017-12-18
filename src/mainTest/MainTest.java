@@ -58,6 +58,15 @@ public class MainTest {
 
 		System.out.println(SolutionString.tree2str2(root444));
 
+		String valid = "()";
+		System.out.println(SolutionString.isValid2(valid));
+
+		String str2 = "A man, a plan, a canal: Panama";
+		System.out.println(SolutionString.isPalindrome(str2));
+
+
+
+
 	}
 	
 	

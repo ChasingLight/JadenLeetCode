@@ -151,9 +151,9 @@ public class SolutionString {
 		sb.append(root.val);
 		if (root.left != null || root.right != null) {
 			sb.append("(");
-			helper(root.left, sb);
+			helper(root.left, sb);   //核心点
 			sb.append(")");
-			if (root.right != null) {
+			if (root.right != null) {  //核心点
 				sb.append("(");
 				helper(root.right, sb);
 				sb.append(")");
@@ -174,10 +174,19 @@ public class SolutionString {
 	 */
 	public static boolean checkRecord(String s) {
 
-		return !((s.indexOf('A') != s.lastIndexOf('A')) || (s.indexOf("LLL") != -1));
+		return !((s.indexOf("A") != s.lastIndexOf("A")) || (s.contains("LLL")));
         
     }
-	
+
+	/**
+	 * 解法二：使用正则表达式，灵活处理
+	 * @param s
+	 * @return
+	 */
+	public static boolean checkRecord2(String s) {
+		return s.matches(".*LLL*.|.*A.*A.*");
+	}
+
 	/**
 	 * 校验有效的括号：Valid Parentheses
 	 * @param s
@@ -186,12 +195,12 @@ public class SolutionString {
 	public static boolean isValid1(String s) {
 		//特殊情况处理
 		if(s == null)	return false;
-		
+
 		//循环处理
 		while(s.indexOf("()")!=-1 || s.indexOf("[]")!=-1 || s.indexOf("{}")!=-1){
 			s = s.replace("()", "").replace("[]", "").replace("{}", "");
 		}
-		
+
 		if(s.length() > 0) return false;
 		
 		return true;
@@ -227,6 +236,90 @@ public class SolutionString {
 		
 		return stack.isEmpty();
     }
+
+	/**
+	 * 找出所有字符串最长公共前缀---局部最优解
+	 * @param strs
+	 * @return
+	 */
+	public static String longestCommonPrefix(String[] strs) {
+		//特殊情况处理
+		if(strs == null || strs.length == 0) return "";
+
+		String result = strs[0];
+
+		for (int i = 1; i < strs.length; i++) {
+			while(strs[i].indexOf(result) != 0){  //注意点
+				result = result.substring(0,result.length()-1);
+			}
+		}
+
+		return result;
+
+	}//end method
+
+
+	/**
+	 * 实现strStr()方法，找寻needle在haystack中第一次出现的下标
+	 * @param haystack
+	 * @param needle
+	 * @return
+	 */
+	public static int strStr(String haystack, String needle) {
+		int m = haystack.length();
+		int n = needle.length();
+
+		//特殊情况处理
+		if (m < n)	return -1;
+
+		for (int i = 0; i < m-n; i++) {
+			if (haystack.substring(i, i+n).equals(needle)) return i;
+		}
+
+		return -1;
+	}
+
+	/**
+	 * 判断一个字符串的“字母数字字符”，是否为"回文字符串"
+	 * 
+	 * 规定：空字符串是回文字符串
+	 * @param s
+	 * @return
+	 */
+	public static boolean isPalindrome(String s) {
+		
+		if (s == null) return false;
+
+		int i = 0;
+		int j = s.length() - 1;
+		while (i < j){
+			if (!Character.isLetterOrDigit(s.charAt(i))){
+				i++;
+				continue;
+			}
+
+			if (!Character.isLetterOrDigit(s.charAt(j))){
+				j--;
+				continue;
+			}
+
+			if(Character.toLowerCase(s.charAt(i)) != Character.toLowerCase(s.charAt(j))){
+				return false;
+			}else{
+				i++;
+				j--;
+			}
+
+		}
+		
+		return true;
+
+	}
+
+	public static boolean isAlphanumeric(char c){
+		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '1' && c <= '9');
+
+	}
 	
 	
 
