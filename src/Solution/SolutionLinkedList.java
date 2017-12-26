@@ -3,8 +3,6 @@ package Solution;
 
 import LinkedListUtil.ListNode;
 
-import java.util.List;
-
 public class SolutionLinkedList {
 
 	/**
@@ -35,9 +33,22 @@ public class SolutionLinkedList {
 		return pre;
 	}
 
+	/**
+	 * 倒转链表---递归实现方式
+	 * @param head
+	 * @return
+	 */
 	public static ListNode reverseList2(ListNode head) {
-		// TODO: 2017/12/18 倒转链表递归实现
-		return null;
+		return helper(null, head);
+	}
+
+	public static ListNode helper(ListNode pre, ListNode head){
+		if (head == null)  return pre;
+
+		ListNode nxt = head.next;
+		head.next = pre;
+		return helper(head, nxt);
+
 	}
 	
 	/**
@@ -47,7 +58,7 @@ public class SolutionLinkedList {
 	 * @return
 	 */
 	public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        ListNode helper = new ListNode(0);
+        ListNode helper = new ListNode(0);  //核心点：以l1为主体，在头部添加一个helper节点，即便第一次l2.val < l1.val,这样插入节点部分代码，通配可用。
         ListNode pre = helper;
         helper.next = l1;
         
@@ -103,6 +114,52 @@ public class SolutionLinkedList {
         
         return head.next; 
     }
+
+	/**
+	 *判断链表是否有环:且涵盖了head为null的处理
+	 *
+	 * @param head
+	 * @return
+	 */
+	public static boolean hasCycle(ListNode head){
+		ListNode slow = head;
+		ListNode fast = head;
+		while(fast != null && fast.next != null){  //核心点：循环跳出条件
+			slow = slow.next;
+			fast = fast.next.next;
+			if (slow == fast)	return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 如果链表有循环，返回开始循环的节点；如果链表没有循环，则返回null
+	 *
+	 * 更考验逻辑：a+b+c+b = 2a+2b => a=c
+	 * @param head
+	 * @return
+	 */
+	public static ListNode detectCycle(ListNode head) {  //空链表  链表节点只有一个
+		ListNode slow = head;
+		ListNode fast = head;
+
+		while(fast != null && fast.next != null){
+			slow = slow.next;
+			fast = fast.next.next;
+
+			if(slow == fast){//链表有环
+				slow = head;
+				while(slow != fast){ //核心点
+					slow = slow.next;
+					fast = fast.next;
+				}
+				return slow;
+			}
+		}
+
+		return null;
+
+	}//end method
 	
 	/**
 	 * 判断一个链表是否为回文链表---第一次书写思路写不出
@@ -136,33 +193,8 @@ public class SolutionLinkedList {
 		
 		return true;
     }
-	
-	/**
-	 * 如果链表有循环，返回开始循环的节点；如果链表没有循环，则返回null
-	 * @param head
-	 * @return
-	 */
-	 public static ListNode detectCycleII(ListNode head) {  //空链表  链表节点只有一个
-		 ListNode slow = head;
-		 ListNode fast = head;
-		 
-		 while(fast != null && fast.next != null){
-			 slow = slow.next;
-			 fast = fast.next.next;
-			 
-			 if(slow == fast){//链表有环
-				 slow = head;
-				 while(slow != fast){
-					 slow = slow.next;
-					 fast = fast.next;
-				 }
-				 return slow;
-			 }
-		 }
-	        
-		 return null;
-	        
-	 }//end method
+
+
 	 
 	 /**
 	  * 求两个链表的交点。
@@ -184,39 +216,45 @@ public class SolutionLinkedList {
 		 }
 		 return a;
 	 }
-	 
-	 /**
-	  * 奇偶链表：将奇数位置的节点放到前面，偶数位置拼接到后面
-	  * @param head  1->2->3->4->5->null
-	  * @return
-	  */
-	 public static ListNode oddEvenList(ListNode head) {
-		 if(head != null){
-			 ListNode odd = head;
-			 ListNode even = head.next;
-			 ListNode evenHead = even;
-			 while(even != null && even.next != null){
-				 odd.next = odd.next.next;
-				 even.next = even.next.next;
-				 odd = odd.next;
-				 even = even.next;
-			 }
-			 odd.next = evenHead;
-		 }
-		
-		 return head;
-	 }
+
+	/**
+	 * 奇偶链表：将奇数位置的节点放到前面，偶数位置拼接到后面
+	 *
+	 * @param head 1->2->3->4->5->null
+	 * @return
+	 */
+	public static ListNode oddEvenList(ListNode head) {
+
+		//特殊情况
+		if (head == null) return null;
+
+		ListNode odd = head;
+		ListNode even = head.next;
+		ListNode evenHead = even;  //核心点
+		while (even != null && even.next != null) {  //核心点
+			odd.next = odd.next.next;
+			even.next = even.next.next;
+			odd = odd.next;
+			even = even.next;
+		}
+		odd.next = evenHead;  //核心点
+
+		return head;
+	}
 	 
 	 /**
 	  * 移除链表末尾的第n个节点
+      *
 	  * 说明：不需要前置节点，直接移除欲删除节点，尾节点特殊处理
+      * 不涵盖一个节点特殊处理
+      *
 	  * @param head
 	  * @param n
 	  * @return
 	  */
 	 public static ListNode removeNthFromEnd(ListNode head, int n){
-		 //特殊情况处理
-		 if(head == null || head.next == null)
+		 //特殊情况处理：一个节点
+		 if(head.next == null)
 			 return null;
 		 
 		 //查找到欲移除节点
@@ -235,7 +273,7 @@ public class SolutionLinkedList {
 		 //判断删除节点是否为尾节点
 		 if(n == 1){
 			 pre.next = null;
-			 return head;
+			 return head;  //核心点
 		 }
 		 
 		 //常规节点移除(非尾节点)
@@ -246,40 +284,74 @@ public class SolutionLinkedList {
 	 
 	 /**
 	  * 移除链表末尾的第n个节点
+      *
 	  * 说明：利用前置节点,来移除欲删除节点，头结点特殊处理
+      * 涵盖了一个节点处理情况
 	  * @param head
 	  * @param n
 	  * @return
 	  */
 	 public static ListNode removeNthFromEnd2(ListNode head, int n){
-		 //特殊情况处理
-		 if(head == null || head.next == null)
-			 return null;
-		 
-		 //查找到欲移除节点的---前置节点
-		 ListNode fast = head;
-		 ListNode slow = head;
-		 for(int i=1; i <= n; i++){
-			 fast = fast.next;
-		 }
-		 
-		 //判断删除节点是否为头节点
-		 if(fast == null){
-			 head = head.next;
-			 return head;
-		 }
-			 
-		 while(fast.next != null){
-			 slow = slow.next;
-			 fast = fast.next;
-		 }
-		 
-		 //常规节点移除(非尾节点)
-		 slow.next = slow.next.next;
-		 return head;
+         ListNode fast = head;
+         ListNode slow = head;
+
+         //fast move
+         for (int i = 1; i <= n; i++) {
+             fast = fast.next;
+         }
+
+         //special: remove head
+         if(fast == null){
+             head = head.next;
+             return head;
+         }
+
+         //find before node
+         while(fast.next != null){
+             slow = slow.next;
+             fast = fast.next;
+         }
+
+         //remove
+         slow.next = slow.next.next;
+         return head;
 	 }
-	 
-	 /**
+
+    /**
+     * 解法3：为链表头添加一个辅助节点
+     *
+     * @param head
+     * @param n
+     * @return
+     */
+    public static ListNode removeNthFromEnd3(ListNode head, int n) {
+        //add helper node
+        ListNode helper = new ListNode(0);
+        helper.next = head;
+
+        ListNode fast = helper;
+        ListNode slow = helper;
+
+        //move fast
+        for (int i = 1; i <= n + 1; i++) {  //核心点：n+1
+            fast = fast.next;
+        }
+
+        //find before node
+        while(fast != null){  //核心点
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        //remove
+        slow.next = slow.next.next;
+
+        return helper.next;
+
+    }
+
+
+    /**
 	  * 链表排序：要求时间复杂度为O(nlogn) 
 	  * 此例使用：归并排序
 	  * @param head

@@ -466,8 +466,55 @@ public class SolutionBinaryTree {
 	}
 
 
+	/**
+	 * 序列化和反序列化一个二叉树
+	 */
+	private static final String spliter = ",";
+	private static final String NN = "X";
 
+	// Encodes a tree to a single string.
 
-    
+	/**
+	 * 序列化：二叉树 => 字符串
+	 * @param root
+	 * @return
+	 */
+	public String serialize(TreeNode root) {
+		StringBuilder sb = new StringBuilder();
+		buildString(root, sb);
+		return sb.toString();
+	}
+
+	private void buildString(TreeNode node, StringBuilder sb){
+		if(node == null) sb.append(NN).append(spliter);
+		else{
+			sb.append(node.val).append(spliter);
+			buildString(node.left, sb);
+			buildString(node.right, sb);
+		}
+	}
+
+	/**
+	 * 反序列化：字符串 => 二叉树
+	 * @param data
+	 * @return
+	 */
+	public TreeNode deserialize(String data) {
+		Deque<String> nodes = new LinkedList<>();
+		nodes.addAll(Arrays.asList(data.split(spliter)));
+		return buildTree(nodes);
+	}
+
+	private TreeNode buildTree(Deque<String> nodes){
+		String val = nodes.remove();
+		if(val.equals(NN)) return null;
+		else{
+			TreeNode node = new TreeNode(Integer.valueOf(val));
+			node.left = buildTree(nodes);
+			node.right = buildTree(nodes);
+			return node;
+		}
+	}
+
   
 }

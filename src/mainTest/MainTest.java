@@ -1,6 +1,9 @@
 package mainTest;
 
+import LinkedListUtil.ListNode;
+import LinkedListUtil.ListNodeUtil;
 import Solution.SolutionBinaryTree;
+import Solution.SolutionLinkedList;
 import Solution.SolutionString;
 import TreeUtil.TreeNode;
 import TreeUtil.TreeNodeUtil;
@@ -64,6 +67,10 @@ public class MainTest {
 		String str2 = "A man, a plan, a canal: Panama";
 		System.out.println(SolutionString.isPalindrome(str2));
 
+		int[] linked = {1};
+		ListNode head = ListNodeUtil.buildListNode(linked);
+		head = SolutionLinkedList.removeNthFromEnd2(head,1);
+		System.out.println(ListNodeUtil.showListNode(head));
 
 
 
