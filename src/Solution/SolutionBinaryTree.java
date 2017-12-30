@@ -475,17 +475,17 @@ public class SolutionBinaryTree {
 	// Encodes a tree to a single string.
 
 	/**
-	 * 序列化：二叉树 => 字符串
+	 * 序列化：二叉树 => 字符串 (使用先序遍历)
 	 * @param root
-	 * @return
+	 * @return   得到结果eg: 1,2,X,X,3,X,X,
 	 */
-	public String serialize(TreeNode root) {
+	public static String serialize(TreeNode root) {
 		StringBuilder sb = new StringBuilder();
 		buildString(root, sb);
 		return sb.toString();
 	}
 
-	private void buildString(TreeNode node, StringBuilder sb){
+	private static void buildString(TreeNode node, StringBuilder sb){
 		if(node == null) sb.append(NN).append(spliter);
 		else{
 			sb.append(node.val).append(spliter);
@@ -499,14 +499,14 @@ public class SolutionBinaryTree {
 	 * @param data
 	 * @return
 	 */
-	public TreeNode deserialize(String data) {
-		Deque<String> nodes = new LinkedList<>();
+	public static TreeNode deserialize(String data) {
+		Queue<String> nodes = new LinkedList<>();
 		nodes.addAll(Arrays.asList(data.split(spliter)));
 		return buildTree(nodes);
 	}
 
-	private TreeNode buildTree(Deque<String> nodes){
-		String val = nodes.remove();
+	private static TreeNode buildTree(Queue<String> nodes){
+		String val = nodes.poll();
 		if(val.equals(NN)) return null;
 		else{
 			TreeNode node = new TreeNode(Integer.valueOf(val));
@@ -514,6 +514,22 @@ public class SolutionBinaryTree {
 			node.right = buildTree(nodes);
 			return node;
 		}
+	}
+
+	static int maxValue;
+
+	public static int maxPathSum(TreeNode root) {
+		maxValue = Integer.MIN_VALUE;
+		maxPathDown(root);
+		return maxValue;
+	}
+
+	private static int maxPathDown(TreeNode node) {
+		if (node == null) return 0;
+		int left = Math.max(0, maxPathDown(node.left));
+		int right = Math.max(0, maxPathDown(node.right));
+		maxValue = Math.max(maxValue, left + right + node.val);
+		return Math.max(left, right) + node.val;
 	}
 
   
