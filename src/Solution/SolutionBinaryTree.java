@@ -518,6 +518,12 @@ public class SolutionBinaryTree {
 
 	static int maxValue;
 
+	/**
+	 * 求二叉树最大路径和
+	 * 算法：巧妙之处，并非递归，相互引用方法
+	 * @param root
+	 * @return
+	 */
 	public static int maxPathSum(TreeNode root) {
 		maxValue = Integer.MIN_VALUE;
 		maxPathDown(root);
@@ -525,10 +531,17 @@ public class SolutionBinaryTree {
 	}
 
 	private static int maxPathDown(TreeNode node) {
-		if (node == null) return 0;
-		int left = Math.max(0, maxPathDown(node.left));
-		int right = Math.max(0, maxPathDown(node.right));
+		//递归出口
+		if(node == null) return 0;
+
+		int left = Math.max(0, maxPathSum(node.left));  //核心点
+		int right = Math.max(0, maxPathSum(node.right));  //核心点
+
+        //int left = maxPathSum(node.left);  //核心点
+		//int right = maxPathSum(node.right);  //核心点
+
 		maxValue = Math.max(maxValue, left + right + node.val);
+
 		return Math.max(left, right) + node.val;
 	}
 

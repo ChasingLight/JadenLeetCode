@@ -26,7 +26,7 @@ public class MainTest {
 		TreeNodeUtil.levelTraverse(root);
 		System.out.println();
 		
-		int[] preOrder = {1,2,4,0,0,5,0,0,3,6,0,0,7,0,0};  //特例测试：1,2,3,0,0,0,3,2,0,0,0   正常测试：1,2,3,0,0,4,0,0,2,4,0,0,3,0,0
+		int[] preOrder = {-2,1,0,0,0};  //特例测试：1,2,3,0,0,0,3,2,0,0,0   正常测试：1,2,3,0,0,4,0,0,2,4,0,0,3,0,0
 		
 		TreeNode root1 = new TreeNode(); 
 		root1 = TreeNodeUtil.buildBinaryTree(root1, preOrder, 0);
@@ -84,6 +84,14 @@ public class MainTest {
 		System.out.println(SolutionMath.calculateNewN(n));
 
 		System.out.println(SolutionBinaryTree.maxPathSum(root1));
+
+        int min = Integer.MIN_VALUE;
+        int test1 = min + 1;
+        int test2 = min + min + min + min;
+
+        System.out.println(min);
+        System.out.println(test1);
+        System.out.println(test2);
 
 
 	}
