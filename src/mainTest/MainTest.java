@@ -2,10 +2,7 @@ package mainTest;
 
 import LinkedListUtil.ListNode;
 import LinkedListUtil.ListNodeUtil;
-import Solution.SolutionBinaryTree;
-import Solution.SolutionLinkedList;
-import Solution.SolutionMath;
-import Solution.SolutionString;
+import Solution.*;
 import TreeUtil.TreeNode;
 import TreeUtil.TreeNodeUtil;
 
@@ -84,6 +81,19 @@ public class MainTest {
 		System.out.println(SolutionMath.calculateNewN(n));
 
 		System.out.println(SolutionBinaryTree.maxPathSum(root1));
+
+		int[] numss = {1,1,2,2,3,4,4,5,5,6,6};
+		System.out.println(SolutionHashTable.singleNumber2(numss));
+
+		int a = 0;
+		int b = 9;
+		a = a ^ b;
+		b = a ^ b;
+		a = a ^ b;
+		System.out.println(a + " " + b);
+
+		String s = "loveleetcode";
+		System.out.println(SolutionHashTable.firstUniqChar(s));
 
 
 	}
