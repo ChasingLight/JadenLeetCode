@@ -1,5 +1,6 @@
 package Solution;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,12 +66,41 @@ public class SolutionHashTable {
         a = a ^ b;
     }
 
+
     /**
      * 找到字符串第一个惟一字符，对应下标
+     * 思路：使用Hash Table思想解决
      * @param s
      * @return
      */
     public static int firstUniqChar(String s) {
+
+        int[] counter = new int[26];
+
+        //hash
+        for (int i = 0; i < s.length(); i++){
+            counter[s.charAt(i) - 'a']++;
+        }
+
+        //find
+        for (int i = 0; i < s.length(); i++){
+            if(counter[s.charAt(i) - 'a'] == 1){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+
+
+    /**
+     * 找到字符串第一个惟一字符，对应下标
+     * 思路：使用String的indexOf方法和lastIndexOf方法
+     * @param s
+     * @return
+     */
+    public static int firstUniqChar2(String s) {
         if (s == null || "".equals(s)){
             return -1;
         }
@@ -84,6 +114,54 @@ public class SolutionHashTable {
         }
 
         return result;
+    }
+
+        /**
+         * 判断字符串s和t是否为回文构词法
+         * 思想：使用hash table去解决
+         * @param s
+         * @param t
+         * @return
+         */
+        public static boolean isAnagram(String s, String t) {
+            //特殊情况处理
+            if (s.length() != t.length())
+                return false;
+
+            int[] counter = new int[26];
+
+            //通过散列函数f(k) = k - 'a'，且k = ['a','z'],将k映射到counter数组上
+            for(int i = 0; i < s.length(); i++){
+                counter[s.charAt(i) - 'a']++;
+                counter[t.charAt(i) - 'a']--;
+            }
+
+            for (int count : counter){
+                if (count != 0)
+                    return false;
+            }
+
+            return true;
+        }
+
+    /**
+     * 判断字符串s和t是否为回文构词法
+     * 使用Array.sort和equals两个方法处理
+     * @param s
+     * @param t
+     * @return
+     */
+    public static boolean isAnagram2(String s, String t) {
+        if (s.length() != t.length())
+            return false;
+
+        char[] sChars = s.toCharArray();
+        char[] tChars = t.toCharArray();
+
+        Arrays.sort(sChars);
+        Arrays.sort(tChars);
+
+        return Arrays.equals(sChars, tChars);
     }
 
 }

@@ -95,10 +95,15 @@ public class MainTest {
 		String s = "loveleetcode";
 		System.out.println(SolutionHashTable.firstUniqChar(s));
 
+		String s1 = "rat";
+		String t1 = "tar";
+		System.out.println(SolutionHashTable.isAnagram2(s1,t1));
 
-	}
+
+
+	}//end main
 	
 	
 
 
-}
+}//end class
