@@ -1,8 +1,6 @@
 package Solution;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by JadenOliver on 2018/1/15.
@@ -162,6 +160,21 @@ public class SolutionHashTable {
         Arrays.sort(tChars);
 
         return Arrays.equals(sChars, tChars);
+    }
+
+    /**
+     * 查询重复元素
+     * 使用hash table思想来解决
+     * @param nums
+     * @return
+     */
+    public static boolean containsDuplicate2(int[] nums) {
+        Set<Integer> set = new HashSet<>(nums.length);
+        for (int x: nums) {
+            if (set.contains(x)) return true;
+            set.add(x);
+        }
+        return false;
     }
 
 }

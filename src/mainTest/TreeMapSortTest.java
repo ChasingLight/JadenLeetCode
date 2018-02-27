@@ -44,6 +44,12 @@ public class TreeMapSortTest {
 
 
         TreeMap<Integer,Integer> map1 = new TreeMap<>();  //默认的TreeMap升序排列
+        map1.put(1,1);
+        map1.put(2,2);
+        map1.put(7,7);
+        map1.put(5,5);
+        System.out.println("map1="+map1);
+
         /*
         * int compare(Object o1, Object o2) 返回一个基本类型的整型，
         * 返回负数表示：o1 小于o2，
@@ -57,11 +63,7 @@ public class TreeMapSortTest {
         map2.put(5,5);
         System.out.println("Map2="+map2);
 
-        map1.put(1,1);
-        map1.put(2,2);
-        map1.put(7,7);
-        map1.put(5,5);
-        System.out.println("map1="+map1);
+
 
     }
 
