@@ -115,7 +115,8 @@ public class SolutionHashTable {
     }
 
         /**
-         * 判断字符串s和t是否为回文构词法
+         * 判断字符串s和t是否为回文构词法  eg："eat" 和 "tea"两个词就是回文构词法。
+         * 总结回文构词特点：1.首先两个词长度相同； 2.再者两个词解析为字母集合，两个集合相同。
          * 思想：使用hash table去解决
          * @param s
          * @param t
@@ -163,6 +164,33 @@ public class SolutionHashTable {
     }
 
     /**
+     * 判断整数数组，是否含有重复元素
+     * 解决方案：使用Set集合类
+     * @param nums
+     * @return
+     */
+    public static boolean containsDuplicate(int[] nums) {
+        if (nums.length == 0)   return false;
+
+        //array -> list
+        List<Integer> list = new ArrayList<>();
+        for (int i=0; i < nums.length; i++){
+            list.add(nums[i]);
+        }
+
+        //get size1
+        int size1 = list.size();
+
+        //list -> set
+        Set set = new HashSet(list);
+
+        //get size2
+        int size2 = set.size();
+
+        return !(size1 == size2);
+    }
+
+    /**
      * 查询重复元素
      * 使用hash table思想来解决
      * @param nums
@@ -175,6 +203,47 @@ public class SolutionHashTable {
             set.add(x);
         }
         return false;
+    }
+
+    /**
+     * 求两个int数组交集：包含重复元素
+     * @param nums1   [1, 2, 2, 1]
+     * @param nums2   [2, 2]
+     * @return
+     */
+    public static int[] intersect(int[] nums1, int[] nums2) {
+
+        //1.sort
+        Arrays.sort(nums1);   //[1, 1, 2, 2, 2]
+        Arrays.sort(nums2);   //[2, 3]
+
+        //2.compare and find
+        int pnt1 = 0;  //指针下标1
+        int pnt2 = 0;  //指针下标2
+
+        ArrayList<Integer> myList = new ArrayList<Integer>();
+        while( (pnt1 < nums1.length) && (pnt2 < nums2.length) ){
+            if(nums1[pnt1]<nums2[pnt2]){
+                pnt1++;
+            }
+            else{
+                if(nums1[pnt1]>nums2[pnt2]){
+                    pnt2++;
+                }
+                else{
+                    myList.add(nums1[pnt1]);
+                    pnt1++;
+                    pnt2++;
+                }
+            }
+        }
+
+        //3.list -> array
+        int[] res = new int[myList.size()];
+        for(int i = 0; i<res.length; i++){
+            res[i] = (Integer)myList.get(i);
+        }
+        return res;
     }
 
 }
