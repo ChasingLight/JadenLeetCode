@@ -209,9 +209,9 @@ public class SolutionHashTable {
      * 求两个int数组交集：包含重复元素
      * @param nums1   [1, 2, 2, 1]
      * @param nums2   [2, 2]
-     * @return
+     * @return [2, 2]
      */
-    public static int[] intersect(int[] nums1, int[] nums2) {
+    public static int[] intersectII(int[] nums1, int[] nums2) {
 
         //1.sort
         Arrays.sort(nums1);   //[1, 1, 2, 2, 2]
@@ -244,6 +244,92 @@ public class SolutionHashTable {
             res[i] = (Integer)myList.get(i);
         }
         return res;
+    }
+
+    /**
+     * 求两个int数组交集：不包含重复元素
+     * @param nums1   [1, 2, 2, 1]
+     * @param nums2   [2, 2]
+     * @return [2]
+     */
+    public static int[] intersectI(int[] nums1, int[] nums2) {
+
+        //1.sort
+        Arrays.sort(nums1);   //[1, 1, 2, 2, 2]
+        Arrays.sort(nums2);   //[2, 3]
+
+        //2.compare and find
+        int pnt1 = 0;  //指针下标1
+        int pnt2 = 0;  //指针下标2
+
+        ArrayList<Integer> myList = new ArrayList<Integer>();
+        while( (pnt1 < nums1.length) && (pnt2 < nums2.length) ){
+            if(nums1[pnt1]<nums2[pnt2]){
+                pnt1++;
+            }
+            else{
+                if(nums1[pnt1]>nums2[pnt2]){
+                    pnt2++;
+                }
+                else{
+                    myList.add(nums1[pnt1]);
+                    pnt1++;
+                    pnt2++;
+                }
+            }
+        }
+
+        //3.remove Duplicate
+        Set<Integer> set = new HashSet<>();
+        set.addAll(myList);
+        myList.clear();
+        myList.addAll(set);
+
+        //4.list -> array
+        int[] res = new int[myList.size()];
+        for(int i = 0; i<res.length; i++){
+            res[i] = (Integer)myList.get(i);
+        }
+        return res;
+    }
+
+    /**
+     * 给定一个非负数n，求小于n范围内，有多少个质数。
+     * 质数:一个大于1的自然数，除了1和它自身外，不能被其他自然数整除的数.
+     *
+     * 特别注意：这种算法，时间复杂度过高，导致算法运行时间过长。
+     * @param n
+     * @return
+     */
+    public static int countPrimes(int n) {
+
+        int count = 0;
+
+        //切分范围
+        if (n <= 1){  //[0,1]
+            return count;
+        }else{  //大于1
+            for(int num=2; num < n; num++){
+                if(isPrimes(num)){
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    /**
+     * 判断输入的自然数是否为质数
+     * @param num
+     * @return
+     */
+    public static boolean isPrimes(int num){
+        for (int i=2; i <= num/2; i++){
+            if (num % i == 0)
+                return false;
+        }
+        return true;
     }
 
 }
