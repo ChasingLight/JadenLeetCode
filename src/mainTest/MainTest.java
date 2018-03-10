@@ -100,6 +100,58 @@ public class MainTest {
 		System.out.println(SolutionHashTable.isAnagram2(s1,t1));
 
 
+		System.out.println(SolutionHashTable.containsDuplicate2(numss));
+
+		List<Integer> list = new ArrayList<>();
+		list.add(0);
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		boolean result = list.contains(3);
+		System.out.println(result);
+
+		System.out.println(list);
+
+		int[] test = new int[10];
+		System.out.println(test[9]);
+
+		System.out.println(SolutionHashTable.countPrimes2(8));
+
+
+
+
+		int[] nums1 = {1,1,1,2,2,3};
+		List<Integer> newList = SolutionHashTable.topKFrequent(nums1, 2);
+		System.out.println(newList);
+
+		//java中比较类型class是否一致
+		String name = "jaden";
+		System.out.println(name.getClass().getName());
+		System.out.println(String.class.getName());
+
+		System.out.println(String.class.getName().equals(name.getClass().getName()));  //method1:通过名称
+		System.out.println(String.class.equals(name.getClass()));  //method2:通过类的类型
+
+		System.out.println(String.class.equals(name.getClass().getName()));  //错误使用
+
+		//java1.8中引入的getClass().getTypeName()方法
+		String[][] names = {{"jaden"}, {"bob"}, {"eric"}};
+		System.out.println(names.getClass().getTypeName());  //since 1.8
+		System.out.println(names.getClass().getName());
+
+		List<Integer> listTest = new ArrayList<>();
+		listTest.add(1);
+		listTest.add(2);
+		listTest.add(3);
+
+		for(Integer temp : listTest){
+			System.out.println(temp);
+
+			if (temp == 1){
+				continue;
+			}
+		}
+
 
 	}//end main
 	

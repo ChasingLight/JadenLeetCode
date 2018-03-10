@@ -207,6 +207,7 @@ public class SolutionHashTable {
 
     /**
      * 求两个int数组交集：包含重复元素
+     * 解决思想：使用两个动态指针
      * @param nums1   [1, 2, 2, 1]
      * @param nums2   [2, 2]
      * @return [2, 2]
@@ -241,8 +242,41 @@ public class SolutionHashTable {
         //3.list -> array
         int[] res = new int[myList.size()];
         for(int i = 0; i<res.length; i++){
-            res[i] = (Integer)myList.get(i);
+            res[i] = myList.get(i);
         }
+        return res;
+    }
+
+    public static int[] intersect2(int[] nums1, int[] nums2) {
+
+        //Arrays.sort()---默认升序
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+
+        //find
+        List<Integer> list = new ArrayList<>();
+        int index1 = 0;
+        int index2 = 0;
+        while( index1 < nums1.length && index2 < nums2.length){
+            if(nums1[index1] < nums2[index2]){
+                index1++;
+            }else{
+                if (nums1[index1] > nums2[index2])
+                    index2++;
+                else{
+                    list.add(nums1[index1]);
+                    index1++;
+                    index2++;
+                }
+            }
+        }
+
+        //list -> array
+        int[] res = new int[list.size()];
+        for (int i=0; i < list.size(); i++){
+            res[i] = list.get(i);
+        }
+
         return res;
     }
 
@@ -330,6 +364,65 @@ public class SolutionHashTable {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * 给定一个非负数n，求小于n范围内，有多少个质数。
+     *
+     * 网上解决方案：埃拉托斯特尼筛法
+     * @param n
+     * @return
+     */
+    public static int countPrimes2(int n) {
+        int count = 0;
+
+        int[] flag = new int[n];  //0代表质数  1代表非质数
+
+        for (int i=2; i < n; i++){
+            if(flag[i] == 0){
+                count++;
+                for (int j = 2; i * j < n; j++) {
+                    flag[i * j] = 1;
+                }
+            }
+        }
+
+        return count;
+    }
+
+
+    /**
+     * 求前K频度的元素
+     * eg:[1,1,1,2,2,3] and k = 2, return [1,2]
+     *
+     * 元素：1 2 3
+     * 频次：3 2 1
+     *
+     * @param nums
+     * @param k  其中这个k总是有效的
+     * @return
+     */
+    public static List<Integer> topKFrequent(int[] nums, int k) {
+
+        if (nums.length == 1)
+            return new ArrayList<>(nums[0]);
+
+        Arrays.sort(nums);
+        Map<Integer, Integer> map = new TreeMap<>((a,b) -> b.compareTo(a));
+
+        int count = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if(nums[i] != nums[i-1]){
+                map.put(count, nums[i - 1]);
+                count = 1;
+            }else{
+                count++;
+            }
+        }
+
+        List<Integer> res = new ArrayList<>(map.values());
+
+        return res.subList(0,k);
     }
 
 }
