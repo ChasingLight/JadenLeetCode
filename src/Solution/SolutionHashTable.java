@@ -366,6 +366,8 @@ public class SolutionHashTable {
         return true;
     }
 
+
+
     /**
      * 给定一个非负数n，求小于n范围内，有多少个质数。
      *
@@ -403,7 +405,6 @@ public class SolutionHashTable {
      * @return
      */
     public static List<Integer> topKFrequent(int[] nums, int k) {
-
         if (nums.length == 1)
             return new ArrayList<>(nums[0]);
 
@@ -411,18 +412,53 @@ public class SolutionHashTable {
         Map<Integer, Integer> map = new TreeMap<>((a,b) -> b.compareTo(a));
 
         int count = 1;
-        for (int i = 1; i < nums.length; i++) {
-            if(nums[i] != nums[i-1]){
-                map.put(count, nums[i - 1]);
-                count = 1;
-            }else{
+        for (int i = 1; i < nums.length; i++) {  //[-1,-1] 1会出现错误
+            if(nums[i] == nums[i-1]){
                 count++;
+                continue;
             }
+            map.put(count, nums[i - 1]);
+            count = 1;
         }
+        map.put(count, nums[nums.length - 1]);  //将数组最后一个元素加入map中去
 
         List<Integer> res = new ArrayList<>(map.values());
 
         return res.subList(0,k);
+    }
+
+    /**
+     * 网上通过的一种解决方式
+     * HashMap竟然有这个getOrDefault方法？？？
+     * @param nums
+     * @param k
+     * @return
+     */
+    public static List<Integer> topKFrequent1(int[] nums, int k) {
+
+        List<Integer>[] bucket = new List[nums.length + 1];
+        Map<Integer, Integer> frequencyMap = new HashMap<Integer, Integer>();
+
+        for (int n : nums) {
+            frequencyMap.put(n, frequencyMap.getOrDefault(n, 0) + 1);
+        }
+
+        for (int key : frequencyMap.keySet()) {
+            int frequency = frequencyMap.get(key);
+            if (bucket[frequency] == null) {
+                bucket[frequency] = new ArrayList<>();
+            }
+            bucket[frequency].add(key);
+        }
+
+        List<Integer> res = new ArrayList<>();
+
+        for (int pos = bucket.length - 1; pos >= 0 && res.size() < k; pos--) {
+            if (bucket[pos] != null) {
+                res.addAll(bucket[pos]);
+            }
+        }
+        return res;
     }
 
 }
