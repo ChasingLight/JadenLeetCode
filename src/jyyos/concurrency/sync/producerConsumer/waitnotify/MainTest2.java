@@ -4,7 +4,7 @@ package jyyos.concurrency.sync.producerConsumer.waitnotify;
  * @author jinhaodong
  * @date 2024/8/19 10:50
  */
-public class MainTest {
+public class MainTest2 {
 
     public static void main(String[] args){
         PCThread2 runnable2 = new PCThread2();

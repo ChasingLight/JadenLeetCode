@@ -21,13 +21,13 @@ public class PCThread2 implements Runnable{
             try{
                 while (true){
                     synchronized (lock){
-                        if (!(depth < n)){
+                        while (!(depth < n)){
                             lock.wait();
                         }
                         Thread.sleep(4);
                         System.out.print("(");
                         depth++;
-                        lock.notify();
+                        lock.notifyAll();
                     }
                 }//end while
             }catch (Exception e){
@@ -37,7 +37,7 @@ public class PCThread2 implements Runnable{
             try{
                 while (true){
                     synchronized (lock){
-                        if (!(depth > 0)){
+                        while (!(depth > 0)){
                             lock.wait();
                         }
                         try {
@@ -47,7 +47,7 @@ public class PCThread2 implements Runnable{
                         }
                         System.out.print(")");
                         depth--;
-                        lock.notify();
+                        lock.notifyAll();
                     }
                 }
             }catch (Exception e){
