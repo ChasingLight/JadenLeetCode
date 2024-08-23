@@ -1,4 +1,4 @@
-package jyyos.concurrency.sync.fish.waitnotify;
+package jyyos.concurrency.sync.printfish.spin;
 
 /**
  * 条件变量面试题
@@ -21,16 +21,16 @@ package jyyos.concurrency.sync.fish.waitnotify;
  * @author jinhaodong
  * @date 2024/8/20 9:52
  */
-public class MainTest2 {
+public class MainTest {
 
     public static void main(String[] args) {
-        FishThread2 fishRunnable2 = new FishThread2();
+        FishThread fishRunnable = new FishThread();
 
         int group = 3;
         for (int i = 0; i < group; i++) {
-            Thread a = new Thread(fishRunnable2, "a");
-            Thread b = new Thread(fishRunnable2, "b");
-            Thread c = new Thread(fishRunnable2, "c");
+            Thread a = new Thread(fishRunnable, "a");
+            Thread b = new Thread(fishRunnable, "b");
+            Thread c = new Thread(fishRunnable, "c");
             a.start();
             b.start();
             c.start();

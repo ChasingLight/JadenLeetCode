@@ -1,7 +1,7 @@
-package jyyos.concurrency.sync.producerConsumer.spin;
+package jyyos.concurrency.sync.producerconsumer.spin;
 
 /**
- * 生产者消费者（带缓冲区）---自旋等待
+ * 生产者消费者（带缓冲区）---自旋等待，直到条件变量满足
  * 缺点：可能使得 CPU 资源浪费
  * @author jinhaodong
  * @date 2024/8/19 10:39

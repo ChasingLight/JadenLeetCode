@@ -1,7 +1,7 @@
-package jyyos.concurrency.sync.fish.spin;
+package jyyos.concurrency.sync.printfish.spin;
 
 /**
- * 自旋等待，直到条件满足
+ * 自旋等待，直到 条件变量 满足
  * @author jinhaodong
  * @date 2024/8/20 10:06
  */

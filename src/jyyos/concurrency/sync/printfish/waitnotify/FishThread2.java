@@ -1,7 +1,7 @@
-package jyyos.concurrency.sync.fish.waitnotify;
+package jyyos.concurrency.sync.printfish.waitnotify;
 
 /**
- * 一直等待，直到别人唤醒后继续执行。
+ * wait/notifyAll机制 --- 一直等待，直到别人唤醒后继续执行。
  * 关键点：唤醒所有线程（notifyAll），再次判断同步条件（while(!condition)）。
  * @author jinhaodong
  * @date 2024/8/20 10:06
@@ -11,7 +11,11 @@ public class FishThread2 implements Runnable{
     // 初始状态
     private String currentState = "G";
 
-    private Object lock = new Object();
+    private Object lock;
+
+    public FishThread2(Object lock) {
+        this.lock = lock;
+    }
 
     @Override
     public void run() {

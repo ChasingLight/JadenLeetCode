@@ -1,6 +1,6 @@
-package jyyos.concurrency.sync.producerConsumer;
+package jyyos.concurrency.sync.producerconsumer;
 
-import jyyos.concurrency.sync.producerConsumer.spin.PCThread;
+import jyyos.concurrency.sync.producerconsumer.spin.PCThread;
 
 import java.io.FileReader;
 import java.io.IOException;

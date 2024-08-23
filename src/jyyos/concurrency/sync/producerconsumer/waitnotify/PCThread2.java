@@ -1,7 +1,7 @@
-package jyyos.concurrency.sync.producerConsumer.waitnotify;
+package jyyos.concurrency.sync.producerconsumer.waitnotify;
 
 /**
- * 生产者消费者（带缓冲区）---信号量
+ * 生产者消费者（带缓冲区）---wait/notifyAll机制
  * @author jinhaodong
  * @date 2024/8/19 10:39
  */
