@@ -23,10 +23,9 @@ public class MainTest {
 		TreeNodeUtil.levelTraverse(root);
 		System.out.println();
 
-		int[] preOrder = {1, 2, 4, 0, 0, 5, 0, 0, 3, 6, 0, 0, 7, 0, 0};  //特例测试：1,2,3,0,0,0,3,2,0,0,0   正常测试：1,2,3,0,0,4,0,0,2,4,0,0,3,0,0
+		Integer[] preOrder = {1, 2, 4, 0, 0, 5, 0, 0, 3, 6, 0, 0, 7, 0, 0};  //特例测试：1,2,3,0,0,0,3,2,0,0,0   正常测试：1,2,3,0,0,4,0,0,2,4,0,0,3,0,0
 
-		TreeNode root1 = new TreeNode();
-		root1 = TreeNodeUtil.buildBinaryTree(root1, preOrder, 0);
+		TreeNode root1 = TreeNodeUtil.buildBinaryTree(preOrder);
 
 		TreeNodeUtil.levelTraverse(root1);
 		System.out.println();

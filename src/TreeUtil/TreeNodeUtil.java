@@ -8,29 +8,31 @@ import java.util.Stack;
 
 public class TreeNodeUtil {
 	
-	public static int counter = 0;
+	public static int index = 0;
 	/**
 	 * 先序构造二叉树:递归实现
-	 * 缺点：使用了一个静态变量counter进行构建
-	 * @param root
-	 * @param a
-	 * @param i
+	 * 缺点：使用了一个静态变量 index 进行构建
+	 * @param a		二叉树先序遍历数组
 	 * @return
 	 */
-	public static TreeNode buildBinaryTree(TreeNode root, int[] a, int i){
-		if (i < a.length) {
-            if (a[i] == 0) {
-                root = null;
-            } else {
-                TreeNode lchild = new TreeNode();
-                TreeNode rchild = new TreeNode();
-                root.val = a[i];
-                root.left = buildBinaryTree(lchild, a, ++counter);
-                root.right = buildBinaryTree(rchild, a, ++counter);
-            }
-        }
-        return root;
-	}
+	public static TreeNode buildBinaryTree(Integer[] a){
+		if (index >= a.length) {
+			return null;
+		}
+		// 空节点
+		if (a[index] == null) {
+			index++;
+			return null;
+		}
+		// 创建当前节点
+		TreeNode root = new TreeNode(a[index]);
+		// 移动到下一个元素
+		index++;
+		// 构建左子树和右子树
+		root.left = buildBinaryTree(a);
+		root.right = buildBinaryTree(a);
+		return root;
+	}//end method
 	
 	
 	/**
@@ -119,15 +121,18 @@ public class TreeNodeUtil {
 	/**
 	 * 先序遍历二叉树：递归实现
 	 * @param root
-	 * 
-	 * 说明：使用栈数据结构，先进后出，先右后左
 	 */
-	public static void preTraverse(TreeNode root){
-		if(root != null){
-			System.out.print(root.val + " ");
-			preTraverse(root.left);
-			preTraverse(root.right);
+	public static List<Integer> preorderTraversal(TreeNode root){
+		List<Integer> ret = new ArrayList<>();
+		if (root == null){
+			return ret;
 		}
+		ret.add(root.val);
+		List<Integer> leftTree = preorderTraversal(root.left);
+		ret.addAll(leftTree);
+		List<Integer> rightTree = preorderTraversal(root.right);
+		ret.addAll(rightTree);
+		return ret;
 	}
 	
 	/**
@@ -155,12 +160,20 @@ public class TreeNodeUtil {
 	 * 中序遍历二叉树：递归实现
 	 * @param root
 	 */
-	public static void inTraverse(TreeNode root){
-		if(root != null){
-			inTraverse(root.left);
-			System.out.print(root.val + " ");
-			inTraverse(root.right);
+	public static List<Integer> inorderTraversal(TreeNode root) {
+		List<Integer> ret = new ArrayList<>();
+		if (root == null){
+			return ret;
 		}
+		// 左子树
+		List<Integer> leftTree = inorderTraversal(root.left);
+		ret.addAll(leftTree);
+		// 根
+		ret.add(root.val);
+		// 右子树
+		List<Integer> rightTree = inorderTraversal(root.right);
+		ret.addAll(rightTree);
+		return ret;
 	}
 	
 	/**
@@ -194,13 +207,22 @@ public class TreeNodeUtil {
 	 * 后序遍历二叉树：递归实现
 	 * @param root
 	 */
-	public static void postTraverse(TreeNode root){
-		if(root != null){
-			postTraverse(root.left);
-			postTraverse(root.right);
-			System.out.print(root.val + " ");
+	public static List<Integer> postorderTraversal(TreeNode root) {
+		List<Integer> ret = new ArrayList<>();
+		if (root == null){
+			return ret;
 		}
+		// 左子树
+		List<Integer> leftTree = postorderTraversal(root.left);
+		ret.addAll(leftTree);
+		// 右子树
+		List<Integer> rightTree = postorderTraversal(root.right);
+		ret.addAll(rightTree);
+		// 根
+		ret.add(root.val);
+		return ret;
 	}
+
 	
 	/**
 	 * 中序遍历:递归实现，同时返回一个列表
