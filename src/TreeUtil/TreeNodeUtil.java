@@ -95,28 +95,37 @@ public class TreeNodeUtil {
 	/**
 	 * 广度优先遍历BFS：非递归实现
 	 * @param root
-	 * 
 	 * 说明：队列是先入先出的数据结构(FIFO)  very nice!
+	 * @return
 	 */
-	public static void levelTraverse(TreeNode root) {
-		
+	public static List<List<Integer>> levelOrder(TreeNode root) {
+		List<List<Integer>> result = new ArrayList<>();
+
 		//特殊情况处理：空树
 		if (root == null) {
 			System.out.println("这是一个空树直接返回");
-			return;
+			return result;
 		}
-		
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+
+        Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);// 从根节点入队列
+		int levelSize;
         while (!queue.isEmpty()) {// 在队列为空前反复迭代
-            TreeNode TreeNode = queue.poll();// 取出队列首节点
-            System.out.print(TreeNode.val + " ");
-            if (TreeNode.left != null)
-                queue.offer(TreeNode.left);// 左孩子入列
-            if (TreeNode.right != null)
-                queue.offer(TreeNode.right);// 右孩子入列
+        	levelSize = queue.size();
+        	List<Integer> levelNodeList = new ArrayList<>(levelSize);
+        	while(levelSize > 0){
+				TreeNode node = queue.poll();// 取出队列首节点
+				levelNodeList.add(node.val);
+				levelSize--;
+				if (node.left != null)
+					queue.offer(node.left);// 左孩子入列
+				if (node.right != null)
+					queue.offer(node.right);// 右孩子入列
+			}
+			result.add(levelNodeList);
         }
-    }
+        return result;
+    }//end method
 	
 	/**
 	 * 先序遍历二叉树：递归实现

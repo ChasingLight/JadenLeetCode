@@ -20,14 +20,14 @@ public class MainTest {
 
 		TreeNode root = SolutionBinaryTree.sortedArrayToBST(asceNums);
 
-		TreeNodeUtil.levelTraverse(root);
+		TreeNodeUtil.levelOrder(root);
 		System.out.println();
 
 		Integer[] preOrder = {1, 2, 4, 0, 0, 5, 0, 0, 3, 6, 0, 0, 7, 0, 0};  //特例测试：1,2,3,0,0,0,3,2,0,0,0   正常测试：1,2,3,0,0,4,0,0,2,4,0,0,3,0,0
 
 		TreeNode root1 = TreeNodeUtil.buildBinaryTree(preOrder);
 
-		TreeNodeUtil.levelTraverse(root1);
+		TreeNodeUtil.levelOrder(root1);
 		System.out.println();
 
 		List<Integer> nums = new ArrayList<>();
@@ -72,7 +72,7 @@ public class MainTest {
 		System.out.println(treeStr);
 
 		TreeNode treeTest = SolutionBinaryTree.deserialize(treeStr);
-		TreeNodeUtil.levelTraverse(treeTest);
+		TreeNodeUtil.levelOrder(treeTest);
 		System.out.println();
 
 		int n = 23;
