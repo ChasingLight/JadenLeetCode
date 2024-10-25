@@ -41,4 +41,31 @@ public class ListNodeUtil {
         }
         return output;
     }//end method
+
+    /**
+     * 链表节点数
+     * @param head  头节点
+     * @return
+     */
+    public static int sizeOfListNode(ListNode head){
+        int size = 0;
+        while(head != null){
+            size++;
+            head = head.next;
+        }
+        return size;
+    }//end method
+
+    /**
+     * 链表对应下标的节点值
+     * @param head  头节点
+     * @param index 下标
+     * @return
+     */
+    public static int indexOfVal(ListNode head, int index){
+        for (int i = 0; i < index; i++) {
+            head = head.next;
+        }
+        return head.val;
+    }//end method
 }
