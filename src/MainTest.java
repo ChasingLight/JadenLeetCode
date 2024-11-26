@@ -1,5 +1,4 @@
-import java.util.Arrays;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * @author jinhaodong
@@ -8,50 +7,76 @@ import java.util.PriorityQueue;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] nums1 = {4,2,3,1,1};
-        int[] nums2 = {7,5,10,9,6};
-        int k = 1;
-        System.out.println(maxScore(nums1, nums2, k));
+        int[] costs = {17,12,10,2,7,2,11,20,8};
+        int k = 3;
+        int candidates = 4;
+        System.out.println(totalCost(costs, k, candidates));
     }
 
 
     /**
-     * 2542 最大子序列分数
-     * 一个数组的 子序列 下标是集合 {0, 1, ..., n-1} 中删除若干元素得到的剩余集合，也可以不删除任何元素。
+     * 2462 雇佣 K 位工人的总代价
      * 说明：
-     *  n == nums1.length == nums2.length
-     *  1 <= n <= 105
-     *  1 <= k <= n
-     *  0 <= nums1[i], nums2[j] <= 105
-     *
+     * 1 <= costs.length <= 10^5
+     * 1 <= costs[i] <= 10^5
+     * 1 <= k, candidates <= costs.length
      */
-    public static long maxScore(int[] nums1, int[] nums2, int k) {
-        int n = nums1.length;
-        Integer[] ids = new Integer[n];
-        for (int i = 0; i < n; i++) {
-            ids[i] = i;
+    public static long totalCost(int[] costs, int k, int candidates) {
+        // int 数组，转化为 list
+        List<Integer> costsList = new ArrayList<>();
+        for(int val : costs){
+            costsList.add(val);
         }
-        // 对下标进行排序，不影响原数组的顺序
-        Arrays.sort(ids, (i, j)->nums2[j]-nums2[i]);
 
-        // 贪心
-        long res;
-        long sum = 0;
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-        for (int i = 0; i < k; i++) {
-            sum += nums1[ids[i]];
-            pq.offer(nums1[ids[i]]);
-        }
-        res = sum * nums2[ids[k-1]];
-
-        // 减小 min(nums2)
-        for (int i = k; i < n; i++) {
-            // 当前 nums2 最小值为 nums2[ids[i]]
-            int x = nums1[ids[i]];
-            if (x > pq.peek()) {
-                sum = sum - pq.poll() + x;
-                pq.offer(x);
-                res = Math.max(res, sum * nums2[ids[i]]);
+        long res = 0L;
+        // k 轮雇佣
+        for (int i = 1; i <= k; i++) {
+            int n = costsList.size();
+            if (n >= candidates) {
+                // 优先队列，实现小根堆 ??? 无法获取元素的对应下标
+                // 最前面 candidates 人，对应下标为 [0, candidates-1]
+                Integer[] beforeIds = new Integer[candidates];
+                for (int j = 0; j < candidates; j++) {
+                    beforeIds[j] = j;
+                }
+                Arrays.sort(beforeIds, Comparator.comparingInt(costsList::get));
+                int beforeMinValIndex = beforeIds[0];
+                // 最后面 candidates 人，对应下标为 [n-c, n-1]
+                Integer[] endIds = new Integer[candidates];
+                for (int j = 0; j < candidates; j++) {
+                    endIds[j] = n - candidates + j;
+                }
+                Arrays.sort(endIds, Comparator.comparingInt(costsList::get));
+                int endMinValIndex = endIds[0];
+                // 判断
+                int finalMinValIndex = 0;
+                int beforeMinVal = costsList.get(beforeMinValIndex);
+                int endMinVal = costsList.get(endMinValIndex);
+                if (beforeMinVal > endMinVal) {
+                    finalMinValIndex = endMinValIndex;
+                }else if(beforeMinVal < endMinVal){
+                    finalMinValIndex = beforeMinValIndex;
+                }else{
+                    finalMinValIndex = Math.min(beforeMinValIndex, endMinValIndex);
+                }
+                // 累计成本
+                res += costsList.get(finalMinValIndex);
+                /*System.out.printf("当前是第 %d 轮雇佣\n", i);
+                System.out.printf("beforeMinValIndex: %d, endMinValIndex: %d, finalMinValIndex: %d, \n", beforeMinValIndex, endMinValIndex, finalMinValIndex);
+                System.out.printf("res = %d\n", res);*/
+                costsList.remove(finalMinValIndex);
+            }else{
+                // 在剩余员工中，选取代价最小
+                // 找到 数组中，最小值对应的下标
+                Integer[] ids = new Integer[n];
+                for (int j = 0; j < n; j++) {
+                    ids[j] = j;
+                }
+                Arrays.sort(ids, Comparator.comparingInt(costsList::get));
+                int idMinValIndex = ids[0];
+                // 累计成本
+                res += costsList.get(idMinValIndex);
+                costsList.remove(idMinValIndex);
             }
         }
         return res;
