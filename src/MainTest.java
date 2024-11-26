@@ -1,8 +1,5 @@
-import TreeUtil.TreeNode;
-import TreeUtil.TreeNodeUtil;
-
-import java.util.Stack;
-
+import java.util.Arrays;
+import java.util.PriorityQueue;
 
 /**
  * @author jinhaodong
@@ -11,67 +8,54 @@ import java.util.Stack;
 public class MainTest {
 
     public static void main(String[] args) {
-        /*Integer[] preOrder = {3, 9, null, null, 20, 15, null, null, 7, null, null};
-        TreeNode root = TreeNodeUtil.buildBinaryTree(preOrder);
-        System.out.println(TreeNodeUtil.preorderTraversal(root));
-        System.out.println(TreeNodeUtil.inorderTraversal(root));
-        System.out.println(TreeNodeUtil.levelOrder(root));*/
-
-        String s = "3[a]2[bc]";  // ab2[cd] => abcdcd
-        System.out.println(decodeString(s));
+        int[] nums1 = {4,2,3,1,1};
+        int[] nums2 = {7,5,10,9,6};
+        int k = 1;
+        System.out.println(maxScore(nums1, nums2, k));
     }
 
 
     /**
-     * 394 字符串解码
-     * 提示： 栈 + 递归
+     * 2542 最大子序列分数
+     * 一个数组的 子序列 下标是集合 {0, 1, ..., n-1} 中删除若干元素得到的剩余集合，也可以不删除任何元素。
      * 说明：
-     *      s.length 取值范围 [1,30]
-     *      s 保证是有效输入   【左括号入栈，遇到右括号出栈处理】
-     *      s 由 小写字母、数字、中括号 组成。
+     *  n == nums1.length == nums2.length
+     *  1 <= n <= 105
+     *  1 <= k <= n
+     *  0 <= nums1[i], nums2[j] <= 105
+     *
      */
-    public static String decodeString(String s) {
-        StringBuilder result = new StringBuilder();
-        // 栈
-        Stack<Character> stack = new Stack<>();
-        for (int i = 0; i < s.length(); i++) {
-            // 小写字母、数字、左中括号---压栈
-            if (s.charAt(i) != ']'){
-                stack.push(s.charAt(i));
-            }else{
-                // 右中括号---出栈
-                int k = 0;
-                StringBuilder currentSb = new StringBuilder();
-                while(stack.peek() != '['){
-                    currentSb.append(stack.pop());
-                }
-                // 弹出-左中括号
-                stack.pop();
-                currentSb.reverse();
-                // 获取 k
-                StringBuilder kSb = new StringBuilder();
-                while(!stack.isEmpty() && stack.peek() >= '0' && stack.peek() <= '9'){
-                    kSb.append(stack.pop());
-                }
-                k = Integer.parseInt(kSb.reverse().toString());
-                // 解码 k[str]
-                StringBuilder decodeCurrentStr = new StringBuilder();
-                for (int j = 1; j <= k; j++) {
-                    decodeCurrentStr.append(currentSb);
-                }
-                // 将解码的明文---压栈
-                for (int j = 0; j < decodeCurrentStr.length(); j++) {
-                    stack.push(decodeCurrentStr.charAt(j));
-                }
-            }//end else
+    public static long maxScore(int[] nums1, int[] nums2, int k) {
+        int n = nums1.length;
+        Integer[] ids = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            ids[i] = i;
         }
-        // 将栈的内容，反转输出
-        while(!stack.isEmpty()){
-            result.append(stack.pop());
-        }
-        return result.reverse().toString();
-    }//end method
+        // 对下标进行排序，不影响原数组的顺序
+        Arrays.sort(ids, (i, j)->nums2[j]-nums2[i]);
 
+        // 贪心
+        long res;
+        long sum = 0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for (int i = 0; i < k; i++) {
+            sum += nums1[ids[i]];
+            pq.offer(nums1[ids[i]]);
+        }
+        res = sum * nums2[ids[k-1]];
+
+        // 减小 min(nums2)
+        for (int i = k; i < n; i++) {
+            // 当前 nums2 最小值为 nums2[ids[i]]
+            int x = nums1[ids[i]];
+            if (x > pq.peek()) {
+                sum = sum - pq.poll() + x;
+                pq.offer(x);
+                res = Math.max(res, sum * nums2[ids[i]]);
+            }
+        }
+        return res;
+    }//end method
 
 
 }
