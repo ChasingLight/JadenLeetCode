@@ -7,12 +7,26 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] costs = {17, 12, 10, 2, 7, 2, 11, 20, 8};
+        /*int[] costs = {17, 12, 10, 2, 7, 2, 11, 20, 8};
         int k = 3;
         int candidates = 4;
-        System.out.println(totalCost(costs, k, candidates));
+        System.out.println(totalCost(costs, k, candidates));*/
 
     }
+
+
+    public int findKthLargest(int[] nums, int k) {
+        // 小根堆
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for (int num : nums) {
+            pq.offer(num);
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+        return pq.peek();
+    }
+
 
 
     /**
