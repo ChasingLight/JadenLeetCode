@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author jinhaodong
@@ -7,59 +8,25 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] costs = {2,1,2};
-        int k = 1;
-        int candidates = 1;
-        System.out.println(totalCost(costs, k, candidates));
+        int[] arr = {2,1,3};
+        int n = arr.length;
+        // 2,0,1
+        // 对数组下标（即-下标对应的值）进行排序，不改变原数组的顺序
+        // 方法1：Arrays.sort
+        Integer[] ids = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            ids[i] = i;
+        }
+        Arrays.sort(ids, (i,j) -> arr[j]-arr[i]);
+        System.out.println(Arrays.toString(ids));
 
+        // 方法2：Map => index,value
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(i, arr[i]);
+        }
+        List<Integer> res = map.keySet().stream().sorted((i, j) -> map.get(j) - map.get(i)).collect(Collectors.toList());
+        System.out.println(res.toString());
     }
-
-
-    /**
-     * 2462 雇佣 K 位工人的总代价
-     * 说明：
-     * 1 <= costs.length <= 10^5
-     * 1 <= costs[i] <= 10^5
-     * 1 <= k, candidates <= costs.length
-     */
-    public static long totalCost(int[] costs, int k, int candidates){
-        // 解法2：剪枝、2个小顶堆、2个队头比较
-        long res = 0L;
-        int n = costs.length;
-        // 可全量覆盖 costs 所有元素
-        if (k >= 1 + n - 2*candidates) {
-            Arrays.sort(costs);
-            for (int i = 0; i < k; i++) {
-                res += costs[i];
-            }
-            return res;
-        }
-        // 未全量覆盖，初始化
-        PriorityQueue<Integer> leftPq = new PriorityQueue<>();
-        for (int i = 0; i < candidates; i++) {
-            leftPq.offer(costs[i]);
-        }
-        PriorityQueue<Integer> rightPq = new PriorityQueue<>();
-        for (int i = n-candidates; i < n; i++) {
-            rightPq.offer(costs[i]);
-        }
-        // k 轮雇佣
-        int left = candidates - 1;
-        int right = n - candidates;
-        for (int i = 0; i < k; i++) {
-            // 代价相同，选左侧下标更小
-            int cost;
-            if (leftPq.peek() <= rightPq.peek()){
-                cost = leftPq.poll();
-                leftPq.offer(costs[++left]);
-            }else{
-                cost = rightPq.poll();
-                rightPq.offer(costs[--right]);
-            }
-            res += cost;
-        }
-        return res;
-    }//end method
-
 
 }
