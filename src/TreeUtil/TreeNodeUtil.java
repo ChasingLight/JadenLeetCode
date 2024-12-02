@@ -145,16 +145,16 @@ public class TreeNodeUtil {
 	}
 	
 	/**
-	 * 先序遍历：非递归实现(DFS深度优先遍历)
-	 * 
+	 * 先序遍历：非递归实现 (DFS深度优先遍历)
 	 * @param root
 	 */
-	public static void perTraverseNoRecursion(TreeNode root){
-		Stack<TreeNode> stack = new Stack<TreeNode>();
+	public static List<Integer> perTraverseNoRecursion(TreeNode root){
+		List<Integer> res = new ArrayList<>();
+		Stack<TreeNode> stack = new Stack<>();
 		stack.push(root);
 		while(!stack.isEmpty()){
 			TreeNode node = stack.pop();
-			System.out.print(node.val + " ");
+			res.add(node.val);
 			if (node.right != null) {//先右后左，右节点先入栈
 				stack.push(node.right);
 			}
@@ -162,7 +162,7 @@ public class TreeNodeUtil {
 				stack.push(node.left);
 			}
 		}//end while
-		
+		return res;
 	}//end method
 	
 	/**
