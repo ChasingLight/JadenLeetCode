@@ -37,4 +37,22 @@ public class TreeMainTest {
         System.out.println(TreeNodeUtil.isSymmetricRecursion(root));
 
     }
+
+    /**
+     * 路径总和
+     * 说明：树中节点的数目在范围 [0, 5000]
+     * @param root
+     * @param targetSum
+     * @return
+     */
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (null == root) {
+            return false;
+        }
+        if (null == root.left && null == root.right) {
+            return root.val == targetSum;
+        }
+        return hasPathSum(root.left, targetSum - root.val)
+                || hasPathSum(root.right, targetSum - root.val);
+    }//end method
 }
