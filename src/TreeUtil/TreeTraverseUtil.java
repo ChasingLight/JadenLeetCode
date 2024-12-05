@@ -43,12 +43,16 @@ public class TreeTraverseUtil {
 	 */
 	public static List<Integer> DFS(TreeNode root){
 		List<Integer> ret = new ArrayList<>();
+		// 空树
 		if (root == null){
 			return ret;
 		}
+		// 根
 		ret.add(root.val);
+		// 左子树
 		List<Integer> leftTree = DFS(root.left);
 		ret.addAll(leftTree);
+		// 右子树
 		List<Integer> rightTree = DFS(root.right);
 		ret.addAll(rightTree);
 		return ret;
@@ -59,6 +63,10 @@ public class TreeTraverseUtil {
 	 */
 	public static List<Integer> DFSByStack(TreeNode root){
 		List<Integer> res = new ArrayList<>();
+		// 空树
+		if (root == null){
+			return res;
+		}
 		Stack<TreeNode> stack = new Stack<>();
 		stack.push(root);
 		while(!stack.isEmpty()){
