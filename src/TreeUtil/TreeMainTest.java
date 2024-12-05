@@ -9,7 +9,7 @@ public class TreeMainTest {
 
     public static void main(String[] args) {
         // 构建一个二叉树
-        Integer[] preOrder = {1,2,null,null,3,null,null};
+        Integer[] preOrder = {1,2,null,3,null,null,2,null,3,null,null};
         TreeNode root = TreeNodeUtil.buildBinaryTree(preOrder);
         // 递归方式遍历：先序、中序、后序
         System.out.println("---递归方式遍历---");
@@ -23,5 +23,18 @@ public class TreeMainTest {
         // 层次遍历
         System.out.println("---层次遍历---");
         System.out.println(TreeNodeUtil.levelOrder(root));
+        // 层次遍历（包含null）
+        System.out.println("---层次遍历（包含null）---");
+        System.out.println(TreeNodeUtil.levelOrderWithNil(root));
+        // 最大深度
+        System.out.println("---二叉树的最大深度---");
+        System.out.println(TreeNodeUtil.maxDepth(root));
+        // 是否对称二叉树（非递归-层次遍历）
+        System.out.println("---是否对称二叉树（非递归-层次遍历）---");
+        System.out.println(TreeNodeUtil.isSymmetric(root));
+        // 是否对称二叉树（递归）
+        System.out.println("---是否对称二叉树（递归）---");
+        System.out.println(TreeNodeUtil.isSymmetricRecursion(root));
+
     }
 }

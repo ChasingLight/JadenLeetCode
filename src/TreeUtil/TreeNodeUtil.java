@@ -1,10 +1,6 @@
 package TreeUtil;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class TreeNodeUtil {
 	
@@ -112,20 +108,55 @@ public class TreeNodeUtil {
 		int levelSize;
         while (!queue.isEmpty()) {// 在队列为空前反复迭代
         	levelSize = queue.size();
-        	List<Integer> levelNodeList = new ArrayList<>(levelSize);
+        	List<Integer> levelValueList = new ArrayList<>(levelSize);
         	while(levelSize > 0){
 				TreeNode node = queue.poll();// 取出队列首节点
-				levelNodeList.add(node.val);
+				levelValueList.add(node.val);
 				levelSize--;
 				if (node.left != null)
 					queue.offer(node.left);// 左孩子入列
 				if (node.right != null)
 					queue.offer(node.right);// 右孩子入列
 			}
-			result.add(levelNodeList);
+			result.add(levelValueList);
         }
         return result;
     }//end method
+
+	/**
+	 * 层次遍历-包含叶子结点 null
+	 * @param root
+	 * @return
+	 */
+	public static List<List<Integer>> levelOrderWithNil(TreeNode root) {
+		List<List<Integer>> result = new ArrayList<>();
+
+		//特殊情况处理：空树
+		if (root == null) {
+			System.out.println("这是一个空树直接返回");
+			return result;
+		}
+
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);// 从根节点入队列
+		int levelSize;
+		while (!queue.isEmpty()) {// 在队列为空前反复迭代
+			levelSize = queue.size();
+			List<Integer> levelValueList = new ArrayList<>(levelSize);
+			while(levelSize-- > 0){
+				TreeNode node = queue.poll();// 取出队列首节点
+				if (null == node) {
+					levelValueList.add(null);
+				}else{
+					levelValueList.add(node.val);
+					queue.offer(node.left);
+					queue.offer(node.right);
+				}
+			}
+			result.add(levelValueList);
+		}
+		return result;
+	}//end method
 	
 	/**
 	 * 先序遍历二叉树：递归实现
@@ -250,7 +281,107 @@ public class TreeNodeUtil {
 		inTraverse(root.right, nums);
 		
 		return nums;
+	}//end method
+
+	/**
+	 * 二叉树的最大深度
+	 *
+	 * @param root
+	 * @return
+	 */
+	public static int maxDepth(TreeNode root) {
+		if (root == null) {
+			return 0;
+		}
+		int leftDepth = maxDepth(root.left);
+		int rightDepth = maxDepth(root.right);
+		return Math.max(leftDepth, rightDepth) + 1;
+	}//end method
+
+	/**
+	 * 是否对称二叉树
+	 * 说明：非递归，层次遍历
+	 * @param root	节点数据取值范围 [1,1000]
+	 * @return
+	 */
+	public static boolean isSymmetric(TreeNode root) {
+		boolean isSymmetric = true;
+		// 初始化：根节点入队列
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		// 逐层遍历
+		int levelSize;
+		while (!queue.isEmpty()) {
+			levelSize = queue.size();
+			List<Integer> levelValueList = new ArrayList<>(levelSize);
+			// 取出当前层-节点值，同时将下一层节点入队列
+			while(levelSize-- > 0){
+				TreeNode node = queue.poll();
+				if (null == node) {
+					levelValueList.add(null);
+				}else{
+					levelValueList.add(node.val);
+					queue.offer(node.left);
+					queue.offer(node.right);
+				}
+			}
+			// 判断当前层节点值，是否对称
+			if (levelValueList.size() > 1 && !isListSymmetric(levelValueList)) {
+				isSymmetric = false;
+				break;
+			}
+		}//end while
+		return isSymmetric;
+	}//end method
+
+	/**
+	 * 私有方法：判断 Integer 列表是否对称
+	 * @param list  大小为偶数
+	 */
+	private static boolean isListSymmetric(List<Integer> list){
+		boolean isListSymmetric = true;
+		int n = list.size();
+		// 双指针
+		int i = 0;
+		int j = n-1;
+		while(i < j){
+			Integer value1 = list.get(i);
+			Integer value2 = list.get(j);
+			if (!Objects.equals(value1, value2)) {
+				isListSymmetric = false;
+				break;
+			}
+			i++;
+			j--;
+		}
+		return isListSymmetric;
+	}//end method
+
+
+	/**
+	 * 是否对称二叉树
+	 * 说明：递归实现
+	 * @param root
+	 * @return
+	 */
+	public static boolean isSymmetricRecursion(TreeNode root){
+		return null == root || recur(root.left, root.right);
 	}
-	
+
+	/**
+	 * 私有方法：递归判断，是否对称二叉树
+	 */
+	private static boolean recur(TreeNode left, TreeNode right){
+		if (left == null && right == null) {
+			return true;
+		}
+		// 只有一个越过叶子节点 或 节点值不同，树不对称
+		if (left == null || right == null || left.val != right.val) {
+			return false;
+		}
+		return recur(left.left, right.right) && recur(left.right, right.left);
+	}
+
+
 }
 
