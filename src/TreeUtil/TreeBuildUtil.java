@@ -37,6 +37,7 @@ public class TreeBuildUtil {
 
 	/**
 	 * 层次遍历结果，构建二叉树
+	 * 		说明：leetcode 官方构建二叉树，采用的方式。
 	 * @param array		二叉树层次遍历数组
 	 * @return
 	 */
