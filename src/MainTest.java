@@ -7,24 +7,31 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] height = {1,8,6,2,5,4,8,3,7};
-        System.out.println(maxArea(height));
+        int[] height = {4,2,0,3,2,5};
+        System.out.println(trap(height));
     }
 
 
-    public static int maxArea(int[] height) {
+    public static int trap(int[] height) {
         int res = 0;
         int n = height.length;
-        int i = 0, j = n - 1;
-        while(i < j){
-            res = Math.max(res, Math.min(height[i], height[j]) * (j - i));
-            if(height[i] < height[j]){
-                i++;
-            }else{
-                j--;
-            }
+        // 前缀最大高度
+        int[] preMax = new int[n];
+        preMax[0] = height[0];
+        for (int i = 1; i < n; i++) {
+            preMax[i] = Math.max(preMax[i-1], height[i]);
+        }
+        // 后缀最大高度
+        int[] sufMax = new int[n];
+        sufMax[n-1] = height[n-1];
+        for (int i = n-2; i >= 0; i--) {
+            sufMax[i] = Math.max(sufMax[i+1], height[i]);
+        }
+        for (int i = 0; i < n; i++) {
+            res += Math.min(preMax[i], sufMax[i]) - height[i];
         }
         return res;
-    }
+    }//end method
+
 
 }
