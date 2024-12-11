@@ -7,30 +7,41 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] nums = {10,5,2,6};
-        int k = 7;
-        System.out.println(numSubarrayProductLessThanK(nums, k));
+        String s = "bbbbb";
+        System.out.println(lengthOfLongestSubstring(s));
     }
 
-    public static int numSubarrayProductLessThanK(int[] nums, int k) {
-        // 子数组乘积最小为 1
-        if(k <= 1){
-            return 0;
-        }
-        // 滑动窗口：移动右指针，收缩左指针
+    /**
+     * 0 <= s.length <= 5 * 104
+     * s 由英文字母、数字、符号和空格组成
+     * @param s
+     * @return
+     */
+    public static int lengthOfLongestSubstring(String s) {
         int res = 0;
-        int n = nums.length;
+        int n = s.length();
         int left = 0;
-        int multiVal = 1;
+        String currStr;
         for (int right = 0; right < n; right++) {
-            multiVal *= nums[right];
-            // 收缩左指针
-            while(multiVal >= k){
-                multiVal /= nums[left++];
+            currStr = s.substring(left, right + 1);
+            while(hasRepeatedChar(currStr)) {
+                // 收缩左指针
+                currStr = s.substring(++left, right + 1);
             }
-            res += right - left + 1;
+            res = Math.max(res, right - left + 1);
         }
         return res;
     }//end method
+
+    private static boolean hasRepeatedChar(String s) {
+        int n = s.length();
+        if (1 == n){
+            return false;
+        }else{
+            char c = s.charAt(n - 1);
+            String lastStr = s.substring(0, n - 1);
+            return lastStr.indexOf(c) != -1;
+        }
+    }
 
 }
