@@ -7,27 +7,37 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] nums = {5,5,5,5,5,5,5};
-        int k = 4;
-        System.out.println(maxSubarrayLength(nums, k));
+        String s = "24489929009";
+        System.out.println(longestSemiRepetitiveSubstring(s));
     }
 
     /**
-     * 1 <= nums.length <= 105
-     * 1 <= nums[i] <= 109
-     * 1 <= k <= nums.length
+     * 1 <= s.length <= 50
+     * '0' <= s[i] <= '9'
      */
-    public static int maxSubarrayLength(int[] nums, int k) {
+    public static int longestSemiRepetitiveSubstring(String s) {
+        int n = s.length();
+        if (n == 1){
+            return 1;
+        }
+        // 滑动窗口
         int res = 1;
-        int n = nums.length;
         int left = 0;
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int right = 0; right < n; right++) {
-            int x = nums[right];
-            map.put(x, map.getOrDefault(x, 0) + 1);
-            // 收缩左指针
-            while(map.get(x) > k) {
-                map.put(nums[left], map.get(nums[left]) - 1);
+        int pairs = 0;
+        int[] pairValue = new int[2];
+        for (int right = 1; right < n; right++) {
+            // 判断相邻字符是否相等
+            char preChar = s.charAt(right - 1);
+            char c = s.charAt(right);
+            if (preChar == c){
+                pairValue[pairs++] = c;
+            }
+            while(pairs > 1){
+                // 收缩左指针
+                if(s.charAt(left) == pairValue[0] && s.charAt(left+1) == pairValue[0]){
+                    pairs--;
+                    pairValue[0] = pairValue[1];
+                }
                 left++;
             }
             res = Math.max(res, right - left + 1);
