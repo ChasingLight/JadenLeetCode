@@ -15,15 +15,17 @@ public class MainTest {
     public static int minSubArrayLen(int target, int[] nums) {
         int res = Integer.MAX_VALUE;
         int n = nums.length;
-        // 暴力解决
-        for (int i = 0; i < n; i++) {
-            int sum = 0;
-            for (int j = i; j < n; j++) {
-                sum += nums[j];
-                if (sum >= target) {
-                    res = Math.min(res, j - i + 1);
-                    break;
-                }
+        // 滑动窗口：枚举右指针，收缩左指针
+        int sum = 0;
+        int left = 0;
+        // 枚举右指针
+        for (int right = 0; right < n; right++) {
+            sum += nums[right];
+            // 因为数组元素均为正整数，此时往右枚举，子数组长度更大不符合
+            while(sum >= target) {
+                res = Math.min(res, right - left + 1);
+                // 收缩左指针
+                sum -= nums[left++];
             }
         }
         return res == Integer.MAX_VALUE ? 0 : res;
