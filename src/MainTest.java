@@ -7,28 +7,30 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] nums = {2,3,1,2,4,3};
-        int target = 7;
-        System.out.println(minSubArrayLen(target, nums));
+        int[] nums = {10,5,2,6};
+        int k = 7;
+        System.out.println(numSubarrayProductLessThanK(nums, k));
     }
 
-    public static int minSubArrayLen(int target, int[] nums) {
-        int res = Integer.MAX_VALUE;
-        int n = nums.length;
-        // 滑动窗口：枚举右指针，收缩左指针
-        int sum = 0;
-        int left = 0;
-        // 枚举右指针
-        for (int right = 0; right < n; right++) {
-            sum += nums[right];
-            // 因为数组元素均为正整数，此时往右枚举，子数组长度更大不符合
-            while(sum >= target) {
-                res = Math.min(res, right - left + 1);
-                // 收缩左指针
-                sum -= nums[left++];
-            }
+    public static int numSubarrayProductLessThanK(int[] nums, int k) {
+        // 子数组乘积最小为 1
+        if(k <= 1){
+            return 0;
         }
-        return res == Integer.MAX_VALUE ? 0 : res;
+        // 滑动窗口：移动右指针，收缩左指针
+        int res = 0;
+        int n = nums.length;
+        int left = 0;
+        int multiVal = 1;
+        for (int right = 0; right < n; right++) {
+            multiVal *= nums[right];
+            // 收缩左指针
+            while(multiVal >= k){
+                multiVal /= nums[left++];
+            }
+            res += right - left + 1;
+        }
+        return res;
     }//end method
 
 }
