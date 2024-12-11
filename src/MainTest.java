@@ -7,29 +7,26 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] height = {4,2,0,3,2,5};
-        System.out.println(trap(height));
+        int[] nums = {2,3,1,2,4,3};
+        int target = 7;
+        System.out.println(minSubArrayLen(target, nums));
     }
 
-
-    public static int trap(int[] height) {
-        int res = 0;
-        int n = height.length;
-        // 相向双指针
-        int left = 0, right = n -1;
-        int preMax = 0;
-        int sufMax = 0;
-        while(left < right){
-            preMax = Math.max(preMax, height[left]);
-            sufMax = Math.max(sufMax, height[right]);
-            if(preMax < sufMax){
-                res += preMax - height[left++];
-            }else{
-                res += sufMax - height[right--];
+    public static int minSubArrayLen(int target, int[] nums) {
+        int res = Integer.MAX_VALUE;
+        int n = nums.length;
+        // 暴力解决
+        for (int i = 0; i < n; i++) {
+            int sum = 0;
+            for (int j = i; j < n; j++) {
+                sum += nums[j];
+                if (sum >= target) {
+                    res = Math.min(res, j - i + 1);
+                    break;
+                }
             }
         }
-        return res;
+        return res == Integer.MAX_VALUE ? 0 : res;
     }//end method
-
 
 }
