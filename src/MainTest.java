@@ -7,27 +7,43 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] nums = {4,6,1,2};
-        int k = 2;
-        System.out.println(maximumBeauty(nums, k));
+        int[] nums = {1,4,2,1};
+        int k = 3;
+        System.out.println(countSubarrays(nums, k));
     }
 
     /**
      * 1 <= nums.length <= 10^5
-     * 0 <= nums[i], k <= 10^5
+     * 1 <= nums[i] <= 10^6
+     * 1 <= k <= 10^5
      */
-    public static int maximumBeauty(int[] nums, int k) {
-        int res = 1;
+    public static long countSubarrays(int[] nums, int k) {
+        long res = 0;
         int n = nums.length;
-        // 排序 + 滑动窗口
-        Arrays.sort(nums);
-        int left = 0;
+        int maxNum = nums[0];
+        // 找到数组的最大值
+        for(int num : nums){
+            maxNum = Math.max(maxNum, num);
+        }
+        // 滑动窗口
+        int left;
+        int currentTimes;
+        int times = 0;
         for (int right = 0; right < n; right++) {
-            while(nums[right] - nums[left] > 2*k){  // 伸伸手，拉不住（无交集）
-                // 收缩左指针
-                left++;
+            if (nums[right] == maxNum) {
+                times++;
             }
-            res = Math.max(res, right - left + 1);
+            // 收缩左指针
+            if(times >= k){
+                left = 0;
+                currentTimes = times;
+                while(currentTimes >= k){
+                    res++;
+                    if (nums[left++] == maxNum) {
+                        currentTimes--;
+                    }
+                }
+            }//end if
         }
         return res;
     }//end method
