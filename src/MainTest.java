@@ -7,38 +7,29 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] nums = {1,4,2,1};
-        int k = 3;
+        int[] nums = {10,15,1,1,20,1};
+        int k = 5;
         System.out.println(countSubarrays(nums, k));
     }
 
     /**
      * 1 <= nums.length <= 10^5
-     * 1 <= nums[i] <= 10^6
-     * 1 <= k <= 10^5
+     * 1 <= nums[i] <= 10^5
+     * 1 <= k <= 10^15
      */
-    public static long countSubarrays(int[] nums, int k) {
-        long res = 0;
+    public static long countSubarrays(int[] nums, long k) {
+        // 极限考虑 nums 只有一个元素 10，k为5，适用
+        long res = 0L;
         int n = nums.length;
-        int maxNum = nums[0];
-        // 找到数组的最大值
-        for(int num : nums){
-            maxNum = Math.max(maxNum, num);
-        }
-        // 滑动窗口
         int left = 0;
-        int times = 0;
+        long sum = 0;
         for (int right = 0; right < n; right++) {
-            if(nums[right] == maxNum){
-                times++;
-            }
-            while(times == k){
+            sum += nums[right];
+            while(sum * (right - left + 1)  >= k){
                 // 收缩左指针
-                if(nums[left++] == maxNum){
-                    times--;
-                }
+                sum -= nums[left++];
             }
-            res += left;
+            res += (right - left + 1);
         }
         return res;
     }//end method
