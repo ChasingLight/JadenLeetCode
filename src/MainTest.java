@@ -26,24 +26,19 @@ public class MainTest {
             maxNum = Math.max(maxNum, num);
         }
         // 滑动窗口
-        int left;
-        int currentTimes;
+        int left = 0;
         int times = 0;
         for (int right = 0; right < n; right++) {
-            if (nums[right] == maxNum) {
+            if(nums[right] == maxNum){
                 times++;
             }
-            // 收缩左指针
-            if(times >= k){
-                left = 0;
-                currentTimes = times;
-                while(currentTimes >= k){
-                    res++;
-                    if (nums[left++] == maxNum) {
-                        currentTimes--;
-                    }
+            while(times == k){
+                // 收缩左指针
+                if(nums[left++] == maxNum){
+                    times--;
                 }
-            }//end if
+            }
+            res += left;
         }
         return res;
     }//end method
