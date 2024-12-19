@@ -9,65 +9,41 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        String s = "ADOBECODEBANC";
-        String t = "ABC";
-        System.out.println(minWindow(s, t));
-
-        char c1 = 'a';
-        char c2 = 'z';
-        char c3 = 'A';
-        char c4 = 'Z';
-        System.out.println(c1 - 97);
-        System.out.println(c2 - 122);
-        System.out.println(c3 - 65);
-        System.out.println(c4 - 90);
+        int[] nums = {5,7,7,8,8,10};
+        int target = 8;
+        System.out.println(Arrays.toString(searchRange(nums, target)));
     }
 
-    /**
-     * 1 <= nums.length <= 10^5
-     * 1 <= nums[i] <= 10^4
-     * 1 <= x <= 10^9
-     */
-    public static String minWindow(String s, String t) {
-        // 窗口条件
-        Map<Character, Integer> tMap = new HashMap<>(52);
-        for (int i = 0; i < t.length(); i++) {
-            char c = t.charAt(i);
-            tMap.put(c, tMap.getOrDefault(c, 0) + 1);
+
+    public static int[] searchRange(int[] nums, int target) {
+        int start = lowerBound(nums, target);
+        if (start == nums.length || nums[start] != target) {
+            return new int[]{-1, -1};
         }
-        // 滑动窗口
-        String res = "";
-        int left = 0;
-        int n = s.length();
-        Map<Character, Integer> sMap = new HashMap<>(52);
-        for (int right = 0; right < n; right++) {
-            char c = s.charAt(right);
-            sMap.put(c, sMap.getOrDefault(c, 0) + 1);
-            // 满足 到 不满足
-            while(meetRequire(sMap, tMap)){
-                if (res.equals("")){
-                    res = s.substring(left, right+1);
-                }else{
-                   res = (right-left+1) < res.length() ? s.substring(left, right+1) : res;
-                }
-                // 收缩左指针  收缩到位
-                sMap.put(s.charAt(left), sMap.get(s.charAt(left)) - 1);
-                left++;
-            }//end while
-        }
-        // 最小窗口，截取 left、right
-        return res;
+        int end = lowerBound(nums, target+1) - 1;
+        return new int[]{start, end};
     }//end method
 
-        static boolean meetRequire(Map<Character, Integer> sMap, Map<Character, Integer> tMap) {
-            for (Character c :  tMap.keySet()){
-                int tVal = tMap.get(c);
-                Integer sVal = sMap.getOrDefault(c, 0);
-                if (sVal < tVal) {
-                    return false;
-                }
+    /**
+     * 闭区间-二分查找
+     * 返回最小的满足 nums[i] >= target 的下标 i
+     */
+    private static int lowerBound(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right) {
+            // 循环不变量：
+            // nums[left-1] < target
+            // nums[right+1] >= target
+            int mid = left + (right - left) / 2;    // 向下取整
+            if (nums[mid] < target) {
+                left = mid + 1;     //[mid+1, right]
+            }else{
+                right = mid - 1;    //[left, mid-1]
             }
-            return true;
-        }//end method
+        }
+        // 循环结束 left = right + 1
+        return right+1;
+    }//end method
 
 }
