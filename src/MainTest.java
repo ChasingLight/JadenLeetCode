@@ -7,24 +7,27 @@ import java.util.Arrays;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] spells = {3,1,2};
-        int[] potions = {8,5,8};
-        int success = 16;
-        System.out.println(Arrays.toString(successfulPairs(spells, potions, success)));
+        int[] nums = {0,1,7,4,4,5};
+        int lower = 3;
+        int upper = 6;
+        System.out.println(countFairPairs(nums, lower, upper));
     }
 
 
-    public static int[] successfulPairs(int[] spells, int[] potions, long success) {
-        int n = spells.length;
-        int[] res = new int[n];
-        // potions 升序排序
-        Arrays.sort(potions);
-        for (int i = 0; i < n; i++) {
-            int x = spells[i];
-            // 向上取整
-            int target = (int) Math.ceil((double) success / x);
-            int index = lowerBound(potions, target);
-            res[i] = (index == potions.length) ? 0 : (potions.length - index);
+    /**
+     * 1 <= nums.length <= 10^5
+     * nums.length == n
+     * -10^9 <= nums[i] <= 10^9
+     * -10^9 <= lower <= upper <= 10^9
+     */
+    public static long countFairPairs(int[] nums, int lower, int upper) {
+        long res = 0L;
+        int n = nums.length;
+        Arrays.sort(nums);
+        for (int i = 0; i <= n-2; i++) {
+            int l = lowerBound(nums, i+1, lower - nums[i]);
+            int r = lowerBound(nums, i+1, upper - nums[i] + 1);
+            res += (r - 1) - l + 1;
         }
         return res;
     }//end method
@@ -33,8 +36,7 @@ public class MainTest {
      * 闭区间-二分查找
      * 返回最小的满足 nums[i] >= target 的下标 i，如果所有数都 小于 target，返回数组的长度
      */
-    private static int lowerBound(int[] nums, int target) {
-        int left = 0;
+    private static int lowerBound(int[] nums, int left, int target) {
         int right = nums.length - 1;
         while (left <= right) {
             // 循环不变量：
