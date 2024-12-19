@@ -8,115 +8,50 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] nums = {5,7,7,8,8,10};
-        int target = 8;
-        System.out.println(Arrays.toString(searchRange(nums, target)));
+        int[] piles = {312884470};
+        int h = 968709470;
+        System.out.println(minEatingSpeed(piles, h));
     }
 
 
-    public static int[] searchRange(int[] nums, int target) {
-        int start = lowerBound(nums, target);
-        if (start == nums.length || nums[start] != target) {
-            return new int[]{-1, -1};
-        }
-        int end = lowerBound(nums, target+1) - 1;
-        return new int[]{start, end};
-    }//end method
-
-
     /**
-     * 【闭区间-写法】
-     * 返回最小的满足 nums[i] >= target 的下标 i。
-     * 如果不存在（即 所有元素小于 target），返回 len(nums)。
-     * @param nums  nums是非递减的，即 nums[i] <= nums[i+1]
-     * @param target
-     * @return
+     * 1 <= piles.length <= 10^4
+     * piles.length <= h <= 10^9
+     * 1 <= piles[i] <= 10^9
      */
-    private static int lowerBound(int[] nums, int target) {
-        int left = 0;
-        int right = nums.length - 1;
-        // 闭区间
+    public static int minEatingSpeed(int[] piles, int h) {
+        // 确定二分的范围
+        int left = 1;
+        int right = 0;
+        for(int val : piles) {
+            right = Math.max(right, val);
+        }
+        // 查找最小吃香蕉速度
+        // 闭区间写法
         while(left <= right){
-            //int mid = (left + right) / 2;
-            // 为避免溢出，上面代码优化为
             int mid = left + (right - left) / 2;
-            if(nums[mid] < target){
-                // [left,mid] 均小于 target，染为红色
-                left = mid + 1;  //下个待确认区间 [mid+1, right]
+            if(check(mid, piles, h)){
+                // [mid,right] 均能吃完
+                right = mid - 1;  // 下一个范围 [left, mid-1]
             }else{
-                // [mid,right] 均大于等于 target，染为蓝色
-                right = mid - 1;   //下个待确认区间 [left, mid-1]
+                // [left,mid] 均不能吃完
+                left = mid + 1;   // 下一个范围 []
             }
         }
-        // 循环结束后，left > right 即 left = right + 1
-        // 循环不变量
-        // nums[left - 1] < target
-        // nums[right + 1] >= target
-        return right + 1;
+        // 循环结束 left > right, 即 right + 1 = left
+        // right + 1
+        return right+1;
     }//end method
 
-
-    /**
-     * 【左闭右开区间-写法】
-     * 返回最小的满足 nums[i] >= target 的下标 i。
-     * 如果不存在（即 所有元素小于 target），返回 len(nums)。
-     * @param nums  nums是非递减的，即 nums[i] <= nums[i+1]
-     * @param target
-     * @return
-     */
-    private static int lowerBound2(int[] nums, int target) {
-        int left = 0;
-        int right = nums.length;
-        // 左闭右开区间
-        while(left < right){
-            //int mid = (left + right) / 2;
-            // 为避免溢出，上面代码优化为
-            int mid = left + (right - left) / 2;
-            if(nums[mid] < target){
-                // [left,mid] 均小于 target，染为红色
-                left = mid + 1;  //下个待确认区间 [mid+1, right)
-            }else{
-                // [mid,right] 均大于等于 target，染为蓝色
-                right = mid;   //下个待确认区间 [left, mid)
+    private static boolean check(int mid, int[] piles, int h) {
+        int sum = piles.length;
+        for (int pile : piles) {
+            sum += (pile - 1) / mid;
+            if (sum > h) {
+                return false;
             }
         }
-        // 循环结束后，left = right
-        // 循环不变量
-        // nums[left - 1] < target
-        // nums[right] >= target
-        return right;
-    }//end method
-
-
-    /**
-     * 【开区间-写法】
-     * 返回最小的满足 nums[i] >= target 的下标 i。
-     * 如果不存在（即 所有元素小于 target），返回 len(nums)。
-     * @param nums  nums是非递减的，即 nums[i] <= nums[i+1]
-     * @param target
-     * @return
-     */
-    private static int lowerBound3(int[] nums, int target) {
-        int left = -1;
-        int right = nums.length;
-        // 开区间
-        while(left + 1 < right){
-            //int mid = (left + right) / 2;
-            // 为避免溢出，上面代码优化为
-            int mid = left + (right - left) / 2;
-            if(nums[mid] < target){
-                // [left,mid] 均小于 target，染为红色
-                left = mid;  //下个待确认区间 (mid, right)
-            }else{
-                // [mid,right] 均大于等于 target，染为蓝色
-                right = mid;   //下个待确认区间 (left, mid)
-            }
-        }
-        // 循环结束后，left < right 即 left + 1 = right
-        // 循环不变量
-        // nums[left] < target
-        // nums[right] >= target
-        return right;
+        return true;
     }//end method
 
 }
