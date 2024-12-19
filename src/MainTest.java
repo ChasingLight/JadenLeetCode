@@ -8,50 +8,47 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] piles = {312884470};
-        int h = 968709470;
-        System.out.println(minEatingSpeed(piles, h));
+        int[] time = {1935,5727103};
+        int totalTrips = 6189436;
+        System.out.println(minimumTime(time, totalTrips));
     }
 
 
     /**
-     * 1 <= piles.length <= 10^4
-     * piles.length <= h <= 10^9
-     * 1 <= piles[i] <= 10^9
+     * 1 <= time.length <= 10^5
+     * 1 <= time[i], totalTrips <= 10^7
      */
-    public static int minEatingSpeed(int[] piles, int h) {
+    public static long minimumTime(int[] time, int totalTrips) {
+        int n = time.length;
         // 确定二分的范围
-        int left = 1;
-        int right = 0;
-        for(int val : piles) {
-            right = Math.max(right, val);
+        long left = 1;
+        int maxTime = 0;
+        for (int val : time) {
+            maxTime = Math.max(maxTime, val);
         }
-        // 查找最小吃香蕉速度
-        // 闭区间写法
+        long right = ((long) Math.ceil((double) totalTrips / n)) * maxTime;
+        // 二分查找-闭区间
         while(left <= right){
-            int mid = left + (right - left) / 2;
-            if(check(mid, piles, h)){
-                // [mid,right] 均能吃完
-                right = mid - 1;  // 下一个范围 [left, mid-1]
+            // 向下取整
+            long mid = (left + right) / 2;
+            if(check(mid, time, totalTrips)){
+                right = mid - 1;
             }else{
-                // [left,mid] 均不能吃完
-                left = mid + 1;   // 下一个范围 []
+                left = mid + 1;
             }
         }
-        // 循环结束 left > right, 即 right + 1 = left
-        // right + 1
         return right+1;
     }//end method
 
-    private static boolean check(int mid, int[] piles, int h) {
-        int sum = piles.length;
-        for (int pile : piles) {
-            sum += (pile - 1) / mid;
-            if (sum > h) {
-                return false;
+    private static boolean check(long mid, int[] time, int totalTrips) {
+        long sum = 0;
+        for (int val : time) {
+            sum += mid / val;
+            if (sum >= totalTrips) {
+                return true;
             }
         }
-        return true;
+        return false;
     }//end method
 
 }
