@@ -1,4 +1,5 @@
-import java.util.Arrays;
+
+import java.util.*;
 
 /**
  * @author jinhaodong
@@ -7,50 +8,115 @@ import java.util.Arrays;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] nums = {0,1,7,4,4,5};
-        int lower = 3;
-        int upper = 6;
-        System.out.println(countFairPairs(nums, lower, upper));
+        int[] nums = {5,7,7,8,8,10};
+        int target = 8;
+        System.out.println(Arrays.toString(searchRange(nums, target)));
     }
 
 
-    /**
-     * 1 <= nums.length <= 10^5
-     * nums.length == n
-     * -10^9 <= nums[i] <= 10^9
-     * -10^9 <= lower <= upper <= 10^9
-     */
-    public static long countFairPairs(int[] nums, int lower, int upper) {
-        long res = 0L;
-        int n = nums.length;
-        Arrays.sort(nums);
-        for (int i = 0; i <= n-2; i++) {
-            int l = lowerBound(nums, i+1, lower - nums[i]);
-            int r = lowerBound(nums, i+1, upper - nums[i] + 1);
-            res += (r - 1) - l + 1;
+    public static int[] searchRange(int[] nums, int target) {
+        int start = lowerBound(nums, target);
+        if (start == nums.length || nums[start] != target) {
+            return new int[]{-1, -1};
         }
-        return res;
+        int end = lowerBound(nums, target+1) - 1;
+        return new int[]{start, end};
     }//end method
 
+
     /**
-     * 闭区间-二分查找
-     * 返回最小的满足 nums[i] >= target 的下标 i，如果所有数都 小于 target，返回数组的长度
+     * 【闭区间-写法】
+     * 返回最小的满足 nums[i] >= target 的下标 i。
+     * 如果不存在（即 所有元素小于 target），返回 len(nums)。
+     * @param nums  nums是非递减的，即 nums[i] <= nums[i+1]
+     * @param target
+     * @return
      */
-    private static int lowerBound(int[] nums, int left, int target) {
+    private static int lowerBound(int[] nums, int target) {
+        int left = 0;
         int right = nums.length - 1;
-        while (left <= right) {
-            // 循环不变量：
-            // nums[left-1] < target
-            // nums[right+1] >= target
-            int mid = left + (right - left) / 2;    // 向下取整
-            if (nums[mid] < target) {
-                left = mid + 1;     //[mid+1, right]
+        // 闭区间
+        while(left <= right){
+            //int mid = (left + right) / 2;
+            // 为避免溢出，上面代码优化为
+            int mid = left + (right - left) / 2;
+            if(nums[mid] < target){
+                // [left,mid] 均小于 target，染为红色
+                left = mid + 1;  //下个待确认区间 [mid+1, right]
             }else{
-                right = mid - 1;    //[left, mid-1]
+                // [mid,right] 均大于等于 target，染为蓝色
+                right = mid - 1;   //下个待确认区间 [left, mid-1]
             }
         }
-        // 循环结束 left = right + 1
-        return right+1;
+        // 循环结束后，left > right 即 left = right + 1
+        // 循环不变量
+        // nums[left - 1] < target
+        // nums[right + 1] >= target
+        return right + 1;
+    }//end method
+
+
+    /**
+     * 【左闭右开区间-写法】
+     * 返回最小的满足 nums[i] >= target 的下标 i。
+     * 如果不存在（即 所有元素小于 target），返回 len(nums)。
+     * @param nums  nums是非递减的，即 nums[i] <= nums[i+1]
+     * @param target
+     * @return
+     */
+    private static int lowerBound2(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length;
+        // 左闭右开区间
+        while(left < right){
+            //int mid = (left + right) / 2;
+            // 为避免溢出，上面代码优化为
+            int mid = left + (right - left) / 2;
+            if(nums[mid] < target){
+                // [left,mid] 均小于 target，染为红色
+                left = mid + 1;  //下个待确认区间 [mid+1, right)
+            }else{
+                // [mid,right] 均大于等于 target，染为蓝色
+                right = mid;   //下个待确认区间 [left, mid)
+            }
+        }
+        // 循环结束后，left = right
+        // 循环不变量
+        // nums[left - 1] < target
+        // nums[right] >= target
+        return right;
+    }//end method
+
+
+    /**
+     * 【开区间-写法】
+     * 返回最小的满足 nums[i] >= target 的下标 i。
+     * 如果不存在（即 所有元素小于 target），返回 len(nums)。
+     * @param nums  nums是非递减的，即 nums[i] <= nums[i+1]
+     * @param target
+     * @return
+     */
+    private static int lowerBound3(int[] nums, int target) {
+        int left = -1;
+        int right = nums.length;
+        // 开区间
+        while(left + 1 < right){
+            //int mid = (left + right) / 2;
+            // 为避免溢出，上面代码优化为
+            int mid = left + (right - left) / 2;
+            if(nums[mid] < target){
+                // [left,mid] 均小于 target，染为红色
+                left = mid;  //下个待确认区间 (mid, right)
+            }else{
+                // [mid,right] 均大于等于 target，染为蓝色
+                right = mid;   //下个待确认区间 (left, mid)
+            }
+        }
+        // 循环结束后，left < right 即 left + 1 = right
+        // 循环不变量
+        // nums[left] < target
+        // nums[right] >= target
+        return right;
     }//end method
 
 }
