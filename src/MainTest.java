@@ -9,24 +9,20 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] nums = {5,7,7,8,8,10};
-        int target = 8;
-        System.out.println(Arrays.toString(searchRange(nums, target)));
+        int[] nums = {0,0,0,0};
+        System.out.println(maximumCount(nums));
     }
 
 
-    public static int[] searchRange(int[] nums, int target) {
-        int start = lowerBound(nums, target);
-        if (start == nums.length || nums[start] != target) {
-            return new int[]{-1, -1};
-        }
-        int end = lowerBound(nums, target+1) - 1;
-        return new int[]{start, end};
+    public static int maximumCount(int[] nums) {
+        int neg = lowerBound(nums, 0);
+        int pos = nums.length - lowerBound(nums, 1);
+        return Math.max(neg, pos);
     }//end method
 
     /**
      * 闭区间-二分查找
-     * 返回最小的满足 nums[i] >= target 的下标 i
+     * 返回最小的满足 nums[i] >= target 的下标 i，如果所有数都 小于 target，返回数组的长度
      */
     private static int lowerBound(int[] nums, int target) {
         int left = 0;
