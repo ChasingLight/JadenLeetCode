@@ -1,6 +1,4 @@
-import org.omg.PortableInterceptor.INACTIVE;
-
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * @author jinhaodong
@@ -9,15 +7,26 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] nums = {0,0,0,0};
-        System.out.println(maximumCount(nums));
+        int[] spells = {3,1,2};
+        int[] potions = {8,5,8};
+        int success = 16;
+        System.out.println(Arrays.toString(successfulPairs(spells, potions, success)));
     }
 
 
-    public static int maximumCount(int[] nums) {
-        int neg = lowerBound(nums, 0);
-        int pos = nums.length - lowerBound(nums, 1);
-        return Math.max(neg, pos);
+    public static int[] successfulPairs(int[] spells, int[] potions, long success) {
+        int n = spells.length;
+        int[] res = new int[n];
+        // potions 升序排序
+        Arrays.sort(potions);
+        for (int i = 0; i < n; i++) {
+            int x = spells[i];
+            // 向上取整
+            int target = (int) Math.ceil((double) success / x);
+            int index = lowerBound(potions, target);
+            res[i] = (index == potions.length) ? 0 : (potions.length - index);
+        }
+        return res;
     }//end method
 
     /**
