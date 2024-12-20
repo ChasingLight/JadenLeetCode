@@ -8,47 +8,48 @@ import java.util.*;
 public class MainTest {
 
     public static void main(String[] args) {
-        int[] time = {1935,5727103};
-        int totalTrips = 6189436;
-        System.out.println(minimumTime(time, totalTrips));
+        int[] nums = {3,7,1,6};
+        System.out.println(minimizeArrayValue(nums));
     }
 
 
     /**
-     * 1 <= time.length <= 10^5
-     * 1 <= time[i], totalTrips <= 10^7
+     * n == nums.length
+     * 2 <= n <= 10^5
+     * 0 <= nums[i] <= 10^9
      */
-    public static long minimumTime(int[] time, int totalTrips) {
-        int n = time.length;
-        // 确定二分的范围
-        long left = 1;
-        int maxTime = 0;
-        for (int val : time) {
-            maxTime = Math.max(maxTime, val);
+    public static int minimizeArrayValue(int[] nums) {
+        // 确定二分范围
+        int left = 0;
+        int right = 0;
+        for(int val : nums){
+            right = Math.max(right, val);
         }
-        long right = ((long) Math.ceil((double) totalTrips / n)) * maxTime;
-        // 二分查找-闭区间
-        while(left <= right){
-            // 向下取整
-            long mid = (left + right) / 2;
-            if(check(mid, time, totalTrips)){
+        // 具有单调性，二分查找
+        while(left <= right) {
+            int mid = (left + right) / 2;
+            //System.out.printf("left: %d, right: %d, mid: %d\n", left, right, mid);
+            if(check(nums, mid)) {
                 right = mid - 1;
             }else{
                 left = mid + 1;
             }
         }
+        // 循环不变量 left - 1、right + 1
+        // 结束循环时，left > right，即 right + 1 = left
         return right+1;
     }//end method
 
-    private static boolean check(long mid, int[] time, int totalTrips) {
-        long sum = 0;
-        for (int val : time) {
-            sum += mid / val;
-            if (sum >= totalTrips) {
-                return true;
+    private static boolean check(int[] nums, int limit) {
+        long extra = 0;
+        for (int i = nums.length - 1; i > 0; i--) {
+            if(nums[i] + extra > limit){
+                extra = nums[i] + extra - limit;
+            }else{
+                extra = 0;
             }
         }
-        return false;
+        return (nums[0] + extra) <= limit;
     }//end method
 
 }
